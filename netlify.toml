@@ -19,7 +19,3 @@
   #  publish = "dist" # Folder with the static content for _redirect file
 
   ## more info on configuring this file: https://ntl.fyi/file-based-build-config
-[dev]
-  command = "npm run build"
-  port = 3000
-  publish = "dist"
