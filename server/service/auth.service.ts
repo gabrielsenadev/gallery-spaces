@@ -108,9 +108,11 @@ export class AuthService {
       }
 
       const userData = await this.authRepository.getUserToken(user.username);
+
       if (!userData) {
         throw Error('User not found.');
       }
+      return true;
     } catch (error) {
       console.error('Login verification failed', error);
       return false;
