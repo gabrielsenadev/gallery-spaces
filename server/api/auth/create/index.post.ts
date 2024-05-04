@@ -1,10 +1,10 @@
-import { createLoginUserInputSchema } from "~/server/schema";
+import { loginUserInputSchema } from "~/server/schema";
 import { EventExecutorResponse } from "~/server/type";
 import { AuthService } from "~/server/service/";
 
 export default eventHandler(async (event): Promise<EventExecutorResponse> => {
   try {
-    const body = await readValidatedBody(event, createLoginUserInputSchema.safeParse);
+    const body = await readValidatedBody(event, loginUserInputSchema.safeParse);
 
     if (!body.success) {
       setResponseStatus(event, 400);
@@ -16,14 +16,14 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
 
     const { username: usernameInput, pincode: pincodeInput } = body.data;
 
-    const existsGallery = await AuthService.getInstance().checkUser({ username: usernameInput });
+    const isUserExists = await AuthService.getInstance().checkUser({ username: usernameInput });
 
-    if (existsGallery) {
+    if (isUserExists) {
       setResponseStatus(event, 401);
 
       return {
         success: false,
-        message: 'Gallery already exists.',
+        message: 'Username already exists.',
       };
     }
 
@@ -36,13 +36,14 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
 
     return {
       success: true,
-      message: 'Gallery created.',
+      message: 'User created.',
     };
   } catch (error) {
+    console.error('Unhandled error when user tries login', error);
     setResponseStatus(event, 500);
 
     return {
-      message: 'There are some unhandled error, sorry.',
+      message: 'Internal server error',
       success: false,
     }
   }

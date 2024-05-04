@@ -1,6 +1,6 @@
 import { z } from "zod";
 
-export const createLoginUserInputSchema = z.object({
+export const loginUserInputSchema = z.object({
   username: z.string({
     message: 'Username name is required.',
   }).max(250, {

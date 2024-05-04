@@ -1,5 +1,6 @@
 import { Store, getStore } from '@netlify/blobs';
-import jwt from 'jsonwebtoken';
+import { UserNotFoundError } from '../error/user-not-found';
+import { User } from '../type';
 
 export type AddJWTTokenInputContext = {
   username: string;
@@ -53,10 +54,10 @@ export class AuthRepository {
   }: GetPincodeHashInputContext) {
     const data = await this.getUser(username);
     if (!data) {
-      throw new Error('User pincode not found.');
+      throw new UserNotFoundError();
     }
 
-    return data;
+    return data.pincode;
   }
 
   createUser({
@@ -72,6 +73,6 @@ export class AuthRepository {
   }
 
   getUser(username: string) {
-    return this.store.get(this.createUserKey(username));
+    return this.store.get(this.createUserKey(username), { type: 'json' }) as Promise<User>;
   }
 }
