@@ -1,7 +1,8 @@
-import { Store } from '@netlify/blobs';
 import jwt from 'jsonwebtoken';
-import { AuthRepository } from '../repository/';
+import { AuthRepository } from '../repository';
 import bcrypt from 'bcrypt';
+import { InvalidUserToken } from '../error/InvalidUserToken';
+import { UserNotFoundError } from '../error/UserNotFound';
 
 export type CheckInputContext = {
   username: string;
@@ -104,18 +105,26 @@ export class AuthService {
     try {
       const user = await jwt.verify(token, authTokenSecret);
       if (typeof user !== 'object' || !user?.username) {
-        throw Error('Invalid User Token.');
+        throw new InvalidUserToken();
       }
 
-      const userData = await this.authRepository.getUserToken(user.username);
+      const userDataToken = await this.authRepository.getUserToken(user.username);
 
-      if (!userData) {
-        throw Error('User not found.');
+      if (!userDataToken) {
+        throw new UserNotFoundError();
+      }
+
+      if (userDataToken !== token) {
+        throw new InvalidUserToken();
       }
       return user;
     } catch (error) {
       console.error('Login verification failed', error);
       return false;
     }
+  }
+
+  logoutUser(username: string) {
+    return this.authRepository.deleteUserToken(username);
   }
 }

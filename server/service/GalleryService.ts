@@ -1,10 +1,6 @@
-import { Store } from '@netlify/blobs';
-import jwt from 'jsonwebtoken';
-import { AuthRepository } from '../repository/';
-import bcrypt from 'bcrypt';
 import { EventExecutorData, UploadImageInputContext } from '../type';
 import { uploadImageInputSchema } from '../schema';
-import { GalleryRepository } from '../repository/gallery.repository';
+import { GalleryRepository } from '../repository/GalleryRepository';
 
 export class GalleryService {
 

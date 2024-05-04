@@ -2,7 +2,7 @@ import { AuthService } from "~/server/service";
 
 export default defineEventHandler(async (event) => {
   const url = event.node.req.url;
-  if (!url?.startsWith('/api/') || url?.startsWith('/api/auth') && url !== '/api/auth/user') {
+  if (!url?.startsWith('/api/') || url?.startsWith('/api/auth') && url !== '/api/auth/user' && url !== '/api/auth/logout') {
     return;
   }
   
@@ -18,6 +18,7 @@ export default defineEventHandler(async (event) => {
   const [, token] = authorizationHeader.split('Bearer ');
   
   const user = await AuthService.getInstance().getUserByToken(token);
+  console.log('ct', token, user);
 
   if (!user) {
     throw createError({

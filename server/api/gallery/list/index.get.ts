@@ -1,5 +1,5 @@
 import { getGalleryListInputSchema } from "~/server/schema";
-import { GalleryService } from "~/server/service/gallery.service";
+import { GalleryService } from "~/server/service/";
 import { EventExecutorResponse } from "~/server/type";
 import { createEventResponse } from "~/server/utils";
 

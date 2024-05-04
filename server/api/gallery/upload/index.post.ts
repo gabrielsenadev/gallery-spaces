@@ -1,6 +1,6 @@
 import { createEventResponse } from "~/server/utils";
 import { EventExecutorResponse } from "../../../type";
-import { GalleryService } from "~/server/service/gallery.service";
+import { GalleryService } from "~/server/service/";
 
 export default eventHandler(async (event): Promise<EventExecutorResponse> => {
   try {

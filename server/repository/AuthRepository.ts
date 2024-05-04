@@ -1,7 +1,7 @@
 import { Store, getStore } from '@netlify/blobs';
-import { UserNotFoundError } from '../error/user-not-found';
+import { UserNotFoundError } from '../error/UserNotFound';
 import { User } from '../type';
-import { Repository } from './repository';
+import { Repository } from './Repository';
 
 export type AddJWTTokenInputContext = {
   username: string;
@@ -79,5 +79,9 @@ export class AuthRepository extends Repository {
 
   getUserToken(username: string) {
     return this.store.get(this.createJWTTokenKey(username));
+  }
+
+  deleteUserToken(username: string) {
+    return this.store.delete(this.createJWTTokenKey(username));
   }
 }

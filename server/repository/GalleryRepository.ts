@@ -1,6 +1,6 @@
 import { Store, getStore } from '@netlify/blobs';
 import { UploadImageInputContext } from '../type';
-import { Repository } from './repository';
+import { Repository } from './Repository';
 
 
 export type GetPincodeHashInputContext = {
