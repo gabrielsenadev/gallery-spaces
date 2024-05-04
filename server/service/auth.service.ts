@@ -4,24 +4,24 @@ import { AuthRepository } from '../repository/';
 import bcrypt from 'bcrypt';
 
 export type CheckInputContext = {
-  gallery: string;
+  username: string;
 };
 
 export type CreateJWTTokenInputContext = {
-  gallery: string;
+  username: string;
 };
 
 export type GenerateJWTTokenInputContext = {
-  gallery: string;
+  username: string;
 };
 
 export type CheckPasswordInputContext = {
-  gallery: string;
+  username: string;
   pincode: string;
 }
 
-export type CreateGalleryInputContext = {
-  gallery: string;
+export type CreateUserInputContext = {
+  username: string;
   pincode: string;
 }
 
@@ -44,12 +44,12 @@ export class AuthService {
   }
 
   createJWTToken({
-    gallery,
+    username,
   }: CreateJWTTokenInputContext) {
     const { authTokenSecret } = useRuntimeConfig();
 
     const token = jwt.sign({
-      gallery,
+      username,
     }, authTokenSecret, {
       expiresIn: 60 * 60 * 24,
     });
@@ -58,22 +58,22 @@ export class AuthService {
   }
 
   async generateJWTToken({
-    gallery
+    username
   }: GenerateJWTTokenInputContext) {
-    const token = this.createJWTToken({ gallery });
+    const token = this.createJWTToken({ username });
 
     await this.authRepository.addJWTToken({
-      gallery, token
+      username, token
     });
 
     return token;
   }
 
   async checkPassword({
-    gallery,
+    username,
     pincode
   }: CheckPasswordInputContext) {
-    const hash = await this.authRepository.getPincodeHash({ gallery });
+    const hash = await this.authRepository.getPincodeHash({ username });
 
     if (!hash) {
       return false;
@@ -82,20 +82,20 @@ export class AuthService {
     return bcrypt.compareSync(pincode, hash);
   }
 
-  createGallery({
-    gallery,
+  createUser({
+    username,
     pincode
-  }: CreateGalleryInputContext) {
+  }: CreateUserInputContext) {
     const { pincodeSalt } = useRuntimeConfig();
     const pincodeHash = bcrypt.hashSync(pincode, pincodeSalt);
-    return this.authRepository.createGallery({
-      gallery,
+    return this.authRepository.createUser({
+      username,
       pincodeHash,
     });
   }
 
-  async checkGallery({ gallery }: CheckInputContext) {
-    const galleryData = await this.authRepository.getGallery(gallery);
-    return !!galleryData;
+  async checkUser({ username }: CheckInputContext) {
+    const usernameData = await this.authRepository.getUser(username);
+    return !!usernameData;
   }
 }

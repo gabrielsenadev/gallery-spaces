@@ -2,16 +2,16 @@ import { Store, getStore } from '@netlify/blobs';
 import jwt from 'jsonwebtoken';
 
 export type AddJWTTokenInputContext = {
-  gallery: string;
+  username: string;
   token: string;
 };
 
 export type GetPincodeHashInputContext = {
-  gallery: string;
+  username: string;
 };
 
-export type CreateGalleryInputContext = {
-  gallery: string;
+export type CreateUserInputContext = {
+  username: string;
   pincodeHash: string;
 };
 
@@ -33,44 +33,45 @@ export class AuthRepository {
     return AuthRepository._instance;
   }
 
-  private createJWTTokenKey(gallery: string) {
-    return `${gallery}:token`;
+  private createJWTTokenKey(username: string) {
+    return `${username}:token`;
   }
 
-  private createGalleryKey(gallery: string) {
-    return gallery;
+  private createUserKey(username: string) {
+    return username;
   }
 
   addJWTToken({
-    gallery,
+    username,
     token
   }: AddJWTTokenInputContext) {
-    return this.store.set(this.createJWTTokenKey(gallery), token);
+    return this.store.set(this.createJWTTokenKey(username), token);
   }
 
   async getPincodeHash({
-    gallery
+    username
   }: GetPincodeHashInputContext) {
-    const data = await this.store.getMetadata(gallery);
+    const data = await this.getUser(username);
     if (!data) {
-      throw new Error('Gallery metadata not found.');
+      throw new Error('User pincode not found.');
     }
-    return data.metadata.pincode as string;
+
+    return data;
   }
 
-  createGallery({
-    gallery,
+  createUser({
+    username,
     pincodeHash
-  }: CreateGalleryInputContext) {
-    const key = this.createGalleryKey(gallery);
-    return this.store.set(key, key, {
-      metadata: {
-        pincode: pincodeHash, 
-      },
+  }: CreateUserInputContext) {
+    const key = this.createUserKey(username);
+    return this.store.setJSON(key, {
+      name: key,
+      imageKey: `${key}:image`,
+      pincode: pincodeHash,
     });
   }
 
-  getGallery(gallery: string) {
-    return this.store.get(this.createGalleryKey(gallery));
+  getUser(username: string) {
+    return this.store.get(this.createUserKey(username));
   }
 }

@@ -1,2 +1,2 @@
-export * from './gallery.schema';
+export * from './user.schema';
 export * from './image.schema';

@@ -1,10 +1,10 @@
-import { createGalleryInputSchema } from "~/server/schema";
+import { createLoginUserInputSchema } from "~/server/schema";
 import { EventExecutorResponse } from "~/server/type";
 import { AuthService } from "~/server/service/";
 
 export default eventHandler(async (event): Promise<EventExecutorResponse> => {
   try {
-    const body = await readValidatedBody(event, createGalleryInputSchema.safeParse);
+    const body = await readValidatedBody(event, createLoginUserInputSchema.safeParse);
 
     if (!body.success) {
       setResponseStatus(event, 400);
@@ -14,9 +14,9 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
       };
     }
 
-    const { gallery: galleryInput, pincode: pincodeInput } = body.data;
+    const { username: usernameInput, pincode: pincodeInput } = body.data;
 
-    const existsGallery = await AuthService.getInstance().checkGallery({ gallery: galleryInput });
+    const existsGallery = await AuthService.getInstance().checkUser({ username: usernameInput });
 
     if (existsGallery) {
       setResponseStatus(event, 401);
@@ -27,8 +27,8 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
       };
     }
 
-    await AuthService.getInstance().createGallery({
-      gallery: galleryInput,
+    await AuthService.getInstance().createUser({
+      username: usernameInput,
       pincode: pincodeInput,
     });
 
