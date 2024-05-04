@@ -40,12 +40,12 @@ export class GalleryService {
     return this.galleryRepository.deleteImage(context);
   }
 
-  async getGalleryImages(username: string) {
-    return this.galleryRepository.getUserGalleryImages(username);
+  async getImages(username: string) {
+    return this.galleryRepository.getImages(username);
   }
 
-  async getGalleryImage(username: string, imageId: string) {
-    return this.galleryRepository.getUserGalleryImage(username, imageId);
+  async getImage(username: string, imageId: string) {
+    return this.galleryRepository.getImage(username, imageId);
   }
 
 }

@@ -61,7 +61,7 @@ export class GalleryRepository extends Repository {
     return this.store.delete(key);
   }
 
-  async getUserGalleryImages(username: string) {
+  async getImages(username: string) {
     const imagesIds = await this.store.list({
       prefix: username,
     });
@@ -69,7 +69,7 @@ export class GalleryRepository extends Repository {
       const metadata = await this.store.getMetadata(key);
       const [, imageKey] = key.split(this.separator);
       return {
-        imageUrl: `/api/gallery/view/?username=${username}&image=${imageKey}`,
+        imageUrl: `/api/gallery/view/${username}/${imageKey}`,
         title: metadata?.metadata.title,
         description: metadata?.metadata.description,
       };
@@ -78,7 +78,7 @@ export class GalleryRepository extends Repository {
     return result;
   }
 
-  async getUserGalleryImage(username: string, imageId: string) {
+  async getImage(username: string, imageId: string) {
     const key = this.createImageKey(username, imageId);
     return this.store.getWithMetadata(key, {
       type: 'blob',

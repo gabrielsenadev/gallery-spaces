@@ -5,20 +5,20 @@ import { createEventResponse } from "~/server/utils";
 
 export default eventHandler(async (event): Promise<EventExecutorResponse> => {
   try {
-    const query = await getValidatedQuery(event, getGalleryListInputSchema.safeParse);
+    const input = await getValidatedRouterParams(event, getGalleryListInputSchema.safeParse);
 
-    const username = query.data?.username ?? event.context.user?.username;
-
-    if (!username) {
+    if (!input.success) {
       return createEventResponse({
         event,
         code: 400,
         success: false,
-        message: 'Username is required.'
+        message: input.error.errors[0]?.message,
       });
     }
 
-    const images = await GalleryService.getInstance().getGalleryImages(username);
+    const { username } = input.data;
+
+    const images = await GalleryService.getInstance().getImages(username);
 
     if (!images) {
       return createEventResponse({

@@ -26,13 +26,17 @@ export const uploadImageInputSchema = z.object({
 
 export const getImageInputSchema = z.object({
   image: z.string({
-    message: 'Image query is required.'
+    message: 'image param is required.'
   }),
-  username: z.string().optional(),
+  username: z.string({
+    message: 'username param is required.'
+  }),
 });
 
 export const getGalleryListInputSchema = z.object({
-  username: z.string().optional(),
+  username: z.string({
+    message: 'username param is required.'
+  }),
 });
 
 export const deleteImageInputSchema = z.object({
