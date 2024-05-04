@@ -99,10 +99,18 @@ export class AuthService {
     return !!usernameData;
   }
 
-  getUserByToken(token: string) {
+  async getUserByToken(token: string) {
     const { authTokenSecret } = useRuntimeConfig();
     try {
-      return jwt.verify(token, authTokenSecret);
+      const user = await jwt.verify(token, authTokenSecret);
+      if (typeof user !== 'object' || !user?.username) {
+        throw Error('Invalid User Token.');
+      }
+
+      const userData = await this.authRepository.getUserToken(user.username);
+      if (!userData) {
+        throw Error('User not found.');
+      }
     } catch (error) {
       console.error('Login verification failed', error);
       return false;

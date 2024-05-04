@@ -76,4 +76,8 @@ export class AuthRepository extends Repository {
   getUser(username: string) {
     return this.store.get(this.createUserKey(username), { type: 'json' }) as Promise<User>;
   }
+
+  getUserToken(username: string) {
+    return this.store.get(this.createJWTTokenKey(username));
+  }
 }

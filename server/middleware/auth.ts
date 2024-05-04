@@ -1,6 +1,6 @@
 import { AuthService } from "~/server/service";
 
-export default defineEventHandler((event) => {
+export default defineEventHandler(async (event) => {
   const url = event.node.req.url;
   if (!url?.startsWith('/api/') || url?.startsWith('/api/auth') && url !== '/api/auth/user') {
     return;
@@ -17,8 +17,8 @@ export default defineEventHandler((event) => {
   
   const [, token] = authorizationHeader.split('Bearer ');
   
-  const user = AuthService.getInstance().getUserByToken(token);
-  
+  const user = await AuthService.getInstance().getUserByToken(token);
+
   if (!user) {
     throw createError({
       statusCode: 401,
