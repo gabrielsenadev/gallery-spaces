@@ -1,6 +1,7 @@
 import { Store, getStore } from '@netlify/blobs';
 import { UserNotFoundError } from '../error/user-not-found';
 import { User } from '../type';
+import { Repository } from './repository';
 
 export type AddJWTTokenInputContext = {
   username: string;
@@ -16,12 +17,13 @@ export type CreateUserInputContext = {
   pincodeHash: string;
 };
 
-export class AuthRepository {
+export class AuthRepository extends Repository {
 
   private static _instance: AuthRepository;
   private store: Store;
 
   private constructor() {
+    super()
     AuthRepository._instance = this;
     this.store = getStore('auth');
   }
@@ -35,7 +37,7 @@ export class AuthRepository {
   }
 
   private createJWTTokenKey(username: string) {
-    return `${username}:token`;
+    return `${username}${this.separator}token`;
   }
 
   private createUserKey(username: string) {
@@ -67,7 +69,6 @@ export class AuthRepository {
     const key = this.createUserKey(username);
     return this.store.setJSON(key, {
       name: key,
-      imageKey: `${key}:image`,
       pincode: pincodeHash,
     });
   }

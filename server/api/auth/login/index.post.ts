@@ -48,7 +48,7 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
   } catch (error) {
 
     if (error instanceof UserNotFoundError) {
-      console.log(error);
+      console.log('Unhandled error', error);
       setResponseStatus(event, 401);
       return {
         success: false,

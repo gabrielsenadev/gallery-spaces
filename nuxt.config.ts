@@ -7,5 +7,6 @@ export default defineNuxtConfig({
   runtimeConfig: {
     pincodeSalt: '',
     authTokenSecret: '',
+    storeKeySeparator: '',
   },
 })

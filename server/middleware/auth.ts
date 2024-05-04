@@ -7,6 +7,7 @@ export default defineEventHandler((event) => {
   }
   
   const authorizationHeader = getRequestHeader(event, 'Authorization');
+
   if (authorizationHeader === undefined) {
     throw createError({
       statusCode: 401,

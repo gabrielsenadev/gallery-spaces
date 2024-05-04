@@ -1,4 +1,3 @@
-import { AuthService } from "~/server/service/auth.service";
 import { EventExecutorResponse } from "~/server/type";
 
 export default eventHandler(async (event): Promise<EventExecutorResponse> => {
