@@ -112,7 +112,7 @@ export class AuthService {
       if (!userData) {
         throw Error('User not found.');
       }
-      return true;
+      return user;
     } catch (error) {
       console.error('Login verification failed', error);
       return false;
