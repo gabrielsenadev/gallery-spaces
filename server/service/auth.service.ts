@@ -98,4 +98,14 @@ export class AuthService {
     const usernameData = await this.authRepository.getUser(username);
     return !!usernameData;
   }
+
+  getUserByToken(token: string) {
+    const { authTokenSecret } = useRuntimeConfig();
+    try {
+      return jwt.verify(token, authTokenSecret);
+    } catch (error) {
+      console.error('Login verification failed', error);
+      return false;
+    }
+  }
 }
