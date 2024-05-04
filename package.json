@@ -12,7 +12,7 @@
   },
   "dependencies": {
     "@netlify/blobs": "^7.3.0",
-    "bcrypt": "^5.1.1",
+    "bcryptjs": "^2.4.3",
     "jsonwebtoken": "^9.0.2",
     "nuxt": "^3.11.2",
     "vue": "^3.4.21",
@@ -21,7 +21,7 @@
   },
   "devDependencies": {
     "@eslint/js": "^9.2.0",
-    "@types/bcrypt": "^5.0.2",
+    "@types/bcryptjs": "^2.4.6",
     "@types/jsonwebtoken": "^9.0.6",
     "eslint": "^8.57.0",
     "eslint-plugin-vue": "^9.25.0",

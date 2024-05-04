@@ -1,6 +1,6 @@
 import jwt from 'jsonwebtoken';
 import { AuthRepository } from '../repository';
-import bcrypt from 'bcrypt';
+import bcrypt from 'bcryptjs';
 import { InvalidUserToken } from '../error/InvalidUserToken';
 import { UserNotFoundError } from '../error/UserNotFound';
 
@@ -79,6 +79,8 @@ export class AuthService {
     if (!hash) {
       return false;
     }
+
+    crypto
 
     return bcrypt.compareSync(pincode, hash);
   }
