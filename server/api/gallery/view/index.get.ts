@@ -4,7 +4,7 @@ import { GalleryService } from "~/server/service/";
 export default eventHandler(async (event) => {
   try {
     const query = await getValidatedQuery(event, getImageInputSchema.safeParse);
-  
+
     if (!query.success) {
       setResponseStatus(event, 400);
 

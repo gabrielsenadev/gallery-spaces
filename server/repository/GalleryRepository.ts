@@ -1,5 +1,5 @@
 import { Store, getStore } from '@netlify/blobs';
-import { UploadImageInputContext } from '../type';
+import { DeleteImageInputContext, UploadImageInputContext } from '../type';
 import { Repository } from './Repository';
 
 
@@ -51,6 +51,14 @@ export class GalleryRepository extends Repository {
         type: image.type,
       },
     });
+  }
+
+  async deleteImage({
+    image,
+    username
+  }: DeleteImageInputContext) {
+    const key = this.createImageKey(username, image);
+    return this.store.delete(key);
   }
 
   async getUserGalleryImages(username: string) {

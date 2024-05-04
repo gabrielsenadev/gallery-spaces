@@ -1,4 +1,4 @@
-import { EventExecutorData, UploadImageInputContext } from '../type';
+import { DeleteImageInputContext, EventExecutorData, UploadImageInputContext } from '../type';
 import { uploadImageInputSchema } from '../schema';
 import { GalleryRepository } from '../repository/GalleryRepository';
 
@@ -34,6 +34,10 @@ export class GalleryService {
 
   async uploadImage(context: UploadImageInputContext) {
     return this.galleryRepository.uploadImage(context);
+  }
+
+  async deleteImage(context: DeleteImageInputContext) {
+    return this.galleryRepository.deleteImage(context);
   }
 
   async getGalleryImages(username: string) {

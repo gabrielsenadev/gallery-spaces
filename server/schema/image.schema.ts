@@ -10,8 +10,16 @@ export const uploadImageInputSchema = z.object({
   }).refine((image) => image.size <= MAX_IMAGE_SIZE, {
     message: 'File too large.',
   }),
-  title: z.string().max(120),
-  description: z.string().max(300).optional(),
+  title: z.string({
+    message: 'Image title is required.'
+  }).max(120, {
+    message: 'Max title size: 120 characters.',
+  }),
+  description: z.string({
+    message: 'Description must be a string'
+  }).max(300, {
+    message: 'Max description size: 300 characters.',
+  }).nullable().optional(),
 }, {
   message: 'Input with image, title and description properties is required.',
 });
@@ -28,7 +36,9 @@ export const getGalleryListInputSchema = z.object({
 });
 
 export const deleteImageInputSchema = z.object({
-  imageId: z.string(),
+  image: z.string({
+    message: 'image property is required.'
+  }),
 }, {
-  message: 'Input with imageId property is required.',
+  message: 'Input with image property is required.',
 });

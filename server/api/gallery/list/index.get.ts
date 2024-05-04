@@ -6,7 +6,7 @@ import { createEventResponse } from "~/server/utils";
 export default eventHandler(async (event): Promise<EventExecutorResponse> => {
   try {
     const query = await getValidatedQuery(event, getGalleryListInputSchema.safeParse);
-    
+
     const username = query.data?.username ?? event.context.user?.username;
 
     if (!username) {
