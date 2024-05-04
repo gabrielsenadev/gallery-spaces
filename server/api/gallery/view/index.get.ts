@@ -1,6 +1,5 @@
 import { getImageInputSchema } from "~/server/schema";
 import { GalleryService } from "~/server/service/";
-import { EventExecutorResponse } from "~/server/type";
 
 export default eventHandler(async (event) => {
   try {

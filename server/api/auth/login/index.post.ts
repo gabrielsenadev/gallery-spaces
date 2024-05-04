@@ -1,19 +1,19 @@
 import { loginUserInputSchema } from "~/server/schema";
-import { AuthService } from "~/server/service/auth.service";
+import { AuthService } from "~/server/service";
 import { EventExecutorResponse } from "../../../type";
-import { UserNotFoundError } from "~/server/error/user-not-found";
+import { UserNotFoundError } from "~/server/error/UserNotFound";
 
 export default eventHandler(async (event): Promise<EventExecutorResponse> => {
   try {
     const body = await readValidatedBody(event, loginUserInputSchema.safeParse);
 
     if (!body.success) {
-      setResponseStatus(event, 400);
-
-      return {
+      return createEventResponse({
+        event,
         success: false,
+        code: 400,
         message: body.error.errors[0].message,
-      };
+      });
     }
 
     const { username: usernameInput, pincode: pincodeInput } = body.data;
@@ -24,43 +24,44 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
     });
 
     if (!isValid) {
-      setResponseStatus(event, 401);
 
-      return {
+      return createEventResponse({
+        event,
         success: false,
-        message: 'Invalid pincode.',
-      };
+        code: 400,
+        message: 'Invalid pincode',
+      });
     }
 
     const token = await AuthService.getInstance().generateJWTToken({
       username: usernameInput,
     });
 
-    setResponseStatus(event, 200);
-
-    return {
+    return createEventResponse({
+      event,
       success: true,
-      message: 'Auth success.',
       data: {
         token,
       },
-    };
+    });
   } catch (error) {
 
     if (error instanceof UserNotFoundError) {
-      console.log('Unhandled error', error);
-      setResponseStatus(event, 401);
-      return {
+      return createEventResponse({
+        event,
         success: false,
-        message: 'Invalid pincode.',
-      };
+        code: 400,
+        message: 'Invalid pincode',
+      });
     }
 
-    console.error('Unhandled error when user tries login', error);
-    setResponseStatus(event, 500);
-    return {
+    console.error('Unhandled error', error);
+
+    return createEventResponse({
+      event,
       success: false,
-      message: 'Internal server error.',
-    };
+      code: 500,
+      message: 'Internal server error'
+    });
   }
 });

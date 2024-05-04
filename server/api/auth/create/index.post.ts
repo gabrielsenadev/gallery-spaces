@@ -7,11 +7,12 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
     const body = await readValidatedBody(event, loginUserInputSchema.safeParse);
 
     if (!body.success) {
-      setResponseStatus(event, 400);
-      return {
+      return createEventResponse({
+        event,
         success: false,
+        code: 400,
         message: body.error.errors[0].message,
-      };
+      });
     }
 
     const { username: usernameInput, pincode: pincodeInput } = body.data;
@@ -19,12 +20,12 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
     const isUserExists = await AuthService.getInstance().checkUser({ username: usernameInput });
 
     if (isUserExists) {
-      setResponseStatus(event, 401);
-
-      return {
+      return createEventResponse({
+        event,
         success: false,
-        message: 'Username already exists.',
-      };
+        code: 401,
+        message: 'User already exists.',
+      });
     }
 
     await AuthService.getInstance().createUser({
@@ -32,19 +33,19 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
       pincode: pincodeInput,
     });
 
-    setResponseStatus(event, 200);
 
-    return {
+    return createEventResponse({
+      event,
       success: true,
-      message: 'User created.',
-    };
+    });
   } catch (error) {
-    console.error('Unhandled error when user tries login', error);
-    setResponseStatus(event, 500);
+    console.error('Unhandled error', error);
 
-    return {
-      message: 'Internal server error',
+    return createEventResponse({
+      event,
       success: false,
-    }
+      code: 500,
+      message: 'Internal server error'
+    });
   }
 });

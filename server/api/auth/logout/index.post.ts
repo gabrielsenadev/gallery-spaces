@@ -1,4 +1,3 @@
-import { loginUserInputSchema } from "~/server/schema";
 import { AuthService } from "~/server/service/";
 import { EventExecutorResponse } from "../../../type";
 
