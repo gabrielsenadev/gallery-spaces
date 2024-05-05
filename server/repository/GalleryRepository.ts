@@ -68,6 +68,20 @@ export class GalleryRepository {
       directories: true,
     });
 
+    if (getSeparator() !== '/') {
+      const list = galleries.blobs.reduce((directories, gallery) => {
+        const [key] = gallery.key.split(getSeparator());
+        directories.add(key);
+        return directories;
+      }, new Set());
+      return Array.from(list).map(gallery => {
+        return {
+          gallery,
+          url: `/api/gallery/view/${gallery}`,
+        }
+      })
+    }
+
     return galleries.directories.map(gallery => {
       return {
         gallery,

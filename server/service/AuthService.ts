@@ -6,6 +6,8 @@ import { UserNotFoundError } from '../error/UserNotFound';
 import { getSeparator } from '../utils';
 import { UserCreationFailed } from '../error/UserCreationFailed';
 import { CheckInputContext, CheckPasswordInputContext, CreateJWTTokenInputContext, CreateUserInputContext, GenerateJWTTokenInputContext, GetDataInputContext } from '~/server/dto/auth';
+import { EventExecutorData } from '../type';
+import { createUserInputSchema } from '../schema';
 
 export class AuthService {
 
@@ -85,7 +87,7 @@ export class AuthService {
     try {
       const { passwordSalt } = useRuntimeConfig();
       const passwordHash = bcrypt.hashSync(password, passwordSalt);
-      let imageUrl = '/api/image/view/default';
+      let imageUrl = '/api/image/view/?key=default';
       const imageKey = this.createUserImageKey(username);
 
       if (image) {
@@ -106,6 +108,18 @@ export class AuthService {
       console.log('Unhandled error', error);
       throw new UserCreationFailed();
     }
+  }
+
+  async getCreateRequestInput(event: EventExecutorData) {
+    const formData = await readFormData(event);
+
+    const dirtyInput = {
+      username: formData.get('username'),
+      password: formData.get('password'),
+      image: formData.get('image'),
+    };
+
+    return createUserInputSchema.safeParse(dirtyInput);
   }
 
   async checkUser({ username }: CheckInputContext) {

@@ -22,7 +22,7 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
     const success = await GalleryService.getInstance().uploadImage({
       image,
       title,
-      description,
+      description: description ?? '',
       username,
     });
 

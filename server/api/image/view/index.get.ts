@@ -3,7 +3,7 @@ import { ImageService } from "~/server/service/";
 
 export default eventHandler(async (event) => {
   try {
-    const input = await getValidatedRouterParams(event, getImageInputSchema.safeParse);
+    const input = await getValidatedQuery(event, getImageInputSchema.safeParse);
 
     if (!input.success) {
       return createEventResponse({

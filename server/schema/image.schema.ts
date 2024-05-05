@@ -3,10 +3,10 @@ import { z } from "zod";
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024 * 1024;
 
 export const imageSchema = z.any()
-.refine(file => file.type.startsWith('image'), {
+.refine(file => file?.type?.startsWith('image'), {
   message: 'Invalid image type.',
 }).refine((file) => {
-  return file.size <= MAX_IMAGE_SIZE;
+  return file?.size <= MAX_IMAGE_SIZE;
 }, {
   message: 'File too large.',
 });
@@ -22,7 +22,7 @@ export const uploadImageInputSchema = z.object({
     message: 'Description must be a string'
   }).max(300, {
     message: 'Max description size: 300 characters.',
-  }).optional().default(''),
+  }).optional().nullable().default(''),
 }, {
   message: 'Input with image, title and description properties is required.',
 });

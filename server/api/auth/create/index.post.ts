@@ -5,18 +5,18 @@ import { getStore } from "@netlify/blobs";
 
 export default eventHandler(async (event): Promise<EventExecutorResponse> => {
   try {
-    const body = await readValidatedBody(event, createUserInputSchema.safeParse);
+    const input = await AuthService.getInstance().getCreateRequestInput(event);
 
-    if (!body.success) {
+    if (!input.success) {
       return createEventResponse({
         event,
         success: false,
         code: 400,
-        message: body.error.errors[0].message,
+        message: input.error.errors[0].message,
       });
     }
 
-    const { username, password, image } = body.data;
+    const { username, password, image } = input.data;
 
     const isUserExists = await AuthService.getInstance().checkUser({ username });
 

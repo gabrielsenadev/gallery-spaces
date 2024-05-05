@@ -54,7 +54,7 @@ export class GalleryService {
         overwrite: false,
       });
 
-      const imageUrl = `/api/image/view/${key}`;
+      const imageUrl = `/api/image/view?key=${key}`;
 
       await this.galleryRepository.setImageGallery({
         description,
