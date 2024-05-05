@@ -1,7 +1,7 @@
 import { Store, getStore } from '@netlify/blobs';
 import { DeleteImageInputContext, UploadImageInputContext } from '../type';
 import { Repository } from './Repository';
-
+import { v4 as uuidv4 } from 'uuid';
 
 export type GetPincodeHashInputContext = {
   username: string;
@@ -48,7 +48,7 @@ export class GalleryRepository extends Repository {
     title,
     username
   }: UploadImageInputContext) {
-    const imageId = crypto.randomUUID().substring(0, 16);
+    const imageId = uuidv4().substring(0, 12);
     const key = this.createImageKey(username, imageId);
     const buffer = await image.arrayBuffer();
     return this.store.set(key, buffer, {
