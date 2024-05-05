@@ -1,5 +1,5 @@
 import { getGalleryListInputSchema } from "~/server/schema";
-import { GalleryService } from "~/server/service/";
+import { AuthService, GalleryService } from "~/server/service/";
 import { EventExecutorResponse } from "~/server/type";
 import { createEventResponse } from "~/server/utils";
 
@@ -29,12 +29,15 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
       });
     }
 
+    const profileImage = await AuthService.getInstance().getProfileImage({ username: gallery });
+
     return createEventResponse({
       event,
       success: true,
       data: {
         gallery,
         images,
+        galleryImage: profileImage,
       },
     });
 

@@ -16,11 +16,11 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
       });
     }
 
-    const { username: usernameInput, pincode: pincodeInput } = body.data;
+    const { username, password } = body.data;
 
     const isValid = await AuthService.getInstance().checkPassword({
-      username: usernameInput,
-      pincode: pincodeInput,
+      username,
+      password,
     });
 
     if (!isValid) {
@@ -29,12 +29,12 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
         event,
         success: false,
         code: 400,
-        message: 'Invalid pincode',
+        message: 'Invalid password',
       });
     }
 
     const token = await AuthService.getInstance().generateJWTToken({
-      username: usernameInput,
+      username,
     });
 
     return createEventResponse({
@@ -51,7 +51,7 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
         event,
         success: false,
         code: 400,
-        message: 'Invalid pincode',
+        message: 'Invalid password',
       });
     }
 

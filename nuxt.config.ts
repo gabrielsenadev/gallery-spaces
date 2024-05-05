@@ -5,7 +5,7 @@ export default defineNuxtConfig({
     preset: "netlify",
   },
   runtimeConfig: {
-    pincodeSalt: '',
+    passwordSalt: '',
     authTokenSecret: '',
     storeKeySeparator: '',
     netlifySiteId: '',

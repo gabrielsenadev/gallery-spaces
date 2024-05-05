@@ -1,5 +1,5 @@
 export type User = {
-  name: string;
-  imageKey: string;
-  pincode: string;
+  username: string;
+  imageUrl: string;
+  password: string;
 };

@@ -1,4 +1,5 @@
 import { z } from "zod";
+import { imageSchema } from "./image.schema";
 
 export const loginUserInputSchema = z.object({
   username: z.string({
@@ -8,11 +9,18 @@ export const loginUserInputSchema = z.object({
   }).regex(/^(?=.*[a-zA-Z]{1,})(?=.*[\d]{0,})[a-zA-Z0-9]{1,150}$/, {
     message: 'Insert a valid username without special characters.',
   }),
-  pincode: z.string({
-    message: 'Pincode is required.',
-  }).regex(/^\d{4}$/, {
-    message: 'Invalid Pincode format. Use only 4 digits.',
+  password: z.string({
+    message: 'password is required.',
+  }).min(6, {
+    message: 'Enter a password with at least 6 characters.'
   }),
 }, {
-  message: 'Input with username and pincode properties is required.',
+  message: 'Input with username and password properties is required.',
+});
+
+export const createUserInputSchema = z.object({
+  ...loginUserInputSchema.shape,
+  image: imageSchema.optional().nullable(),
+}, {
+  message: 'Input with username and password properties is required.',
 });

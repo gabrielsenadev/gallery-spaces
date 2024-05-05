@@ -1,39 +1,22 @@
 import jwt from 'jsonwebtoken';
-import { AuthRepository } from '../repository';
+import { AuthRepository, ImageRepository } from '../repository';
 import bcrypt from 'bcryptjs';
 import { InvalidUserToken } from '../error/InvalidUserToken';
 import { UserNotFoundError } from '../error/UserNotFound';
-
-export type CheckInputContext = {
-  username: string;
-};
-
-export type CreateJWTTokenInputContext = {
-  username: string;
-};
-
-export type GenerateJWTTokenInputContext = {
-  username: string;
-};
-
-export type CheckPasswordInputContext = {
-  username: string;
-  pincode: string;
-}
-
-export type CreateUserInputContext = {
-  username: string;
-  pincode: string;
-}
+import { getSeparator } from '../utils';
+import { UserCreationFailed } from '../error/UserCreationFailed';
+import { CheckInputContext, CheckPasswordInputContext, CreateJWTTokenInputContext, CreateUserInputContext, GenerateJWTTokenInputContext, GetDataInputContext } from '~/server/dto/auth';
 
 export class AuthService {
 
   private static _instance: AuthService;
   private authRepository: AuthRepository;
+  private imageRepository: ImageRepository;
 
   private constructor() {
     AuthService._instance = this;
     this.authRepository = AuthRepository.getInstance();
+    this.imageRepository = ImageRepository.getInstance();
   }
 
   public static getInstance() {
@@ -59,12 +42,13 @@ export class AuthService {
   }
 
   async generateJWTToken({
-    username
+    username,
   }: GenerateJWTTokenInputContext) {
     const token = this.createJWTToken({ username });
 
     await this.authRepository.addJWTToken({
-      username, token
+      username,
+      token
     });
 
     return token;
@@ -72,29 +56,56 @@ export class AuthService {
 
   async checkPassword({
     username,
-    pincode
+    password
   }: CheckPasswordInputContext) {
-    const hash = await this.authRepository.getPincodeHash({ username });
+    const hash = await this.authRepository.getPassword({ username });
 
     if (!hash) {
       return false;
     }
 
-    crypto
-
-    return bcrypt.compareSync(pincode, hash);
+    return bcrypt.compareSync(password, hash);
   }
 
-  createUser({
+  createUserImageKey(username: string) {
+    return `${username}${getSeparator()}profileImage`;
+  }
+
+  async getProfileImage({
+    username
+  }: GetDataInputContext) {
+    return this.authRepository.getProfileImage({ username });
+  }
+
+  async createUser({
     username,
-    pincode
+    password,
+    image
   }: CreateUserInputContext) {
-    const { pincodeSalt } = useRuntimeConfig();
-    const pincodeHash = bcrypt.hashSync(pincode, pincodeSalt);
-    return this.authRepository.createUser({
-      username,
-      pincodeHash,
-    });
+    try {
+      const { passwordSalt } = useRuntimeConfig();
+      const passwordHash = bcrypt.hashSync(password, passwordSalt);
+      let imageUrl = '/api/image/view/default';
+      const imageKey = this.createUserImageKey(username);
+
+      if (image) {
+        await this.imageRepository.upload({
+          image,
+          key: imageKey,
+          overwrite: true,
+        });
+        imageUrl = `/api/image/view/${imageKey}`;
+      }
+
+      await this.authRepository.createUser({
+        username,
+        hash: passwordHash,
+        imageUrl,
+      });
+    } catch (error) {
+      console.log('Unhandled error', error);
+      throw new UserCreationFailed();
+    }
   }
 
   async checkUser({ username }: CheckInputContext) {

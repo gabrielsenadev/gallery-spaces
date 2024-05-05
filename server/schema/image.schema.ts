@@ -2,15 +2,17 @@ import { z } from "zod";
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024 * 1024;
 
+export const imageSchema = z.any()
+.refine(file => file.type.startsWith('image'), {
+  message: 'Invalid image type.',
+}).refine((file) => {
+  return file.size <= MAX_IMAGE_SIZE;
+}, {
+  message: 'File too large.',
+});
+
 export const uploadImageInputSchema = z.object({
-  image: z.any()
-    .refine(file => file.type.startsWith('image'), {
-      message: 'Invalid image type.',
-    }).refine((file) => {
-      return file.size <= MAX_IMAGE_SIZE;
-    }, {
-      message: 'File too large.',
-    }),
+  image: imageSchema,
   title: z.string({
     message: 'Image title is required.'
   }).max(120, {

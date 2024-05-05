@@ -2,20 +2,7 @@ import { Store, getStore } from '@netlify/blobs';
 import { UserNotFoundError } from '../error/UserNotFound';
 import { User } from '../type';
 import { getSeparator } from '../utils';
-
-export type AddJWTTokenInputContext = {
-  username: string;
-  token: string;
-};
-
-export type GetPincodeHashInputContext = {
-  username: string;
-};
-
-export type CreateUserInputContext = {
-  username: string;
-  pincodeHash: string;
-};
+import { AddJWTTokenInputContext, CreateUserInputRepositoryContext, GetDataInputContext } from '~/server/dto/auth';
 
 export class AuthRepository {
 
@@ -57,25 +44,39 @@ export class AuthRepository {
     return this.store.set(this.createJWTTokenKey(username), token);
   }
 
-  async getPincodeHash({
+  async getPassword({
     username
-  }: GetPincodeHashInputContext) {
+  }: GetDataInputContext) {
     const data = await this.getUser(username);
     if (!data) {
       throw new UserNotFoundError();
     }
 
-    return data.pincode;
+    return data.password;
+  }
+
+  async getProfileImage({
+    username
+  }: GetDataInputContext) {
+    const data = await this.getUser(username);
+
+    if (!data) {
+      throw new UserNotFoundError();
+    }
+
+    return data.imageUrl;
   }
 
   createUser({
     username,
-    pincodeHash
-  }: CreateUserInputContext) {
+    hash,
+    imageUrl,
+  }: CreateUserInputRepositoryContext) {
     const key = this.createUserKey(username);
     return this.store.setJSON(key, {
-      name: key,
-      pincode: pincodeHash,
+      username: key,
+      password: hash,
+      imageUrl,
     });
   }
 

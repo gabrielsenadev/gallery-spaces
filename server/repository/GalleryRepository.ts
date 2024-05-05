@@ -59,7 +59,7 @@ export class GalleryRepository {
     });
 
     return Promise.all(images.blobs.map(async ({ key }) => {
-      return (await this.store.get(key)) as unknown as ImageGallery;
+      return (await this.store.get(key, { type: 'json' })) as ImageGallery;
     }));
   }
 
