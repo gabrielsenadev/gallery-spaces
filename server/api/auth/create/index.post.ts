@@ -5,8 +5,6 @@ import { getStore } from "@netlify/blobs";
 
 export default eventHandler(async (event): Promise<EventExecutorResponse> => {
   try {
-    const store = getStore('auth');
-    console.log('store test', store);
     const body = await readValidatedBody(event, loginUserInputSchema.safeParse);
 
     if (!body.success) {

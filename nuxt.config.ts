@@ -2,7 +2,11 @@
 export default defineNuxtConfig({
   devtools: { enabled: true },
   nitro: {
-    preset: "netlify",
+    preset: "netlify-edge",
+    output: {
+      dir: "dist",
+      serverDir: "dist",
+    }
   },
   runtimeConfig: {
     pincodeSalt: '',
