@@ -32,7 +32,10 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
     return createEventResponse({
       event,
       success: true,
-      data: images,
+      data: {
+        images,
+        gallery: username,
+      },
     });
 
   } catch (error) {

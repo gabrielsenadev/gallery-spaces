@@ -26,11 +26,8 @@ export const uploadImageInputSchema = z.object({
 });
 
 export const getImageInputSchema = z.object({
-  image: z.string({
-    message: 'image param is required.'
-  }),
-  username: z.string({
-    message: 'username param is required.'
+  key: z.string({
+    message: 'key param is required.'
   }),
 });
 
