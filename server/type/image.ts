@@ -8,4 +8,5 @@ export type ImageGallery = {
   description: string;
   imageUrl: string;
   title: string;
+  id: string;
 };

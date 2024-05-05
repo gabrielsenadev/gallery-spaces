@@ -36,12 +36,14 @@ export class GalleryRepository {
     description,
     imageUrl,
     key,
-    title
+    title,
+    imageId
   }: SetImageGalleryInputContext) {
     return this.store.setJSON(key, {
       description,
       imageUrl,
       title,
+      id: imageId,
     });
   }
 

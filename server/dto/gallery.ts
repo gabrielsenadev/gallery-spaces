@@ -12,6 +12,7 @@ export type SetImageGalleryInputContext = {
   title: string;
   description: string;
   key: string;
+  imageId: string;
 };
 
 export type DeleteImageInputContext = {

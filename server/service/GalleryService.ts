@@ -45,8 +45,8 @@ export class GalleryService {
 
   async uploadImage({ username, description, image, title }: UploadImageInputContext) {
     try {
-      const imageKey = v4().substring(0, 12);
-      const key = this.createGalleryImageKey(username, imageKey);
+      const imageId = v4().substring(0, 12);
+      const key = this.createGalleryImageKey(username, imageId);
 
       await this.imageRepository.upload({
         image,
@@ -61,6 +61,7 @@ export class GalleryService {
         imageUrl,
         key,
         title,
+        imageId,
       });
 
       return true;
