@@ -1,8 +1,16 @@
 import { AuthService } from "~/server/service";
 
+const AUTH_ROUTES = [
+  '/api/auth/user',
+  '/api/auth/logout',
+  '/api/gallery/upload',
+  '/api/gallery/delete',
+];
+
 export default defineEventHandler(async (event) => {
-  const url = event.node.req.url;
-  if (!url?.startsWith('/api/') || url?.startsWith('/api/auth') && url !== '/api/auth/user' && url !== '/api/auth/logout') {
+  const url = getRequestURL(event);
+  
+  if (!AUTH_ROUTES.includes(url.pathname)) {
     return;
   }
   
