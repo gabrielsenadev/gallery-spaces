@@ -30,18 +30,16 @@ export class ImageRepository extends Repository {
     return ImageRepository._instance;
   }
 
-  getImage(key: string) {
+  get(key: string) {
     return this.store.getWithMetadata(key, { type: 'blob' });
   }
 
-  async uploadImage({
-    description,
+  async upload({
     image,
-    title,
     key,
     overwrite
   }: UploadImageInputContext) {
-    const storeImage = await this.getImage(key);
+    const storeImage = await this.get(key);
 
     if (!overwrite && storeImage) {
       throw new ImageAlreadyExists();
@@ -50,17 +48,15 @@ export class ImageRepository extends Repository {
     const buffer = await image.arrayBuffer();
     return this.store.set(key, buffer, {
       metadata: {
-        title,
-        description,
         type: image.type,
       },
     });
   }
 
-  async deleteImage({
+  async delete({
     key
   }: DeleteImageInputContext) {
-    const storeImage = await this.getImage(key);
+    const storeImage = await this.get(key);
 
     if (!storeImage) {
       throw new ImageNotFound();

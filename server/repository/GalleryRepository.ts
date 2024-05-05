@@ -1,5 +1,5 @@
 import { Store, getStore } from '@netlify/blobs';
-import { DeleteImageInputContext, UploadImageInputContext } from '../type';
+import { SetImageGalleryInputContext, DeleteImageInputContext, UploadImageInputContext } from '~/server/dto/gallery';
 import { Repository } from './Repository';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -44,10 +44,10 @@ export class GalleryRepository extends Repository {
 
   async uploadImage({
     description,
-    image,
     title,
     username
   }: UploadImageInputContext) {
+    this.store.setJSON();
     const imageId = uuidv4().substring(0, 12);
     const key = this.createImageKey(username, imageId);
     const buffer = await image.arrayBuffer();
@@ -57,6 +57,19 @@ export class GalleryRepository extends Repository {
         description,
         type: image.type,
       },
+    });
+  }
+
+  async setImageGallery({
+    description,
+    imageUrl,
+    key,
+    title
+  }: SetImageGalleryInputContext) {
+    return this.store.setJSON(key, {
+      description,
+      imageUrl,
+      title,
     });
   }
 

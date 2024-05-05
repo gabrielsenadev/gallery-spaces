@@ -20,7 +20,7 @@ export const uploadImageInputSchema = z.object({
     message: 'Description must be a string'
   }).max(300, {
     message: 'Max description size: 300 characters.',
-  }).nullable().optional(),
+  }).optional().default(''),
 }, {
   message: 'Input with image, title and description properties is required.',
 });

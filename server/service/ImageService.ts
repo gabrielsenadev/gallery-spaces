@@ -20,15 +20,15 @@ export class ImageService {
   }
 
   async uploadImage(context: UploadImageInputContext) {
-    return this.imageRepository.uploadImage(context);
+    return this.imageRepository.upload(context);
   }
 
   async deleteImage(context: DeleteImageInputContext) {
-    return this.imageRepository.deleteImage(context);
+    return this.imageRepository.delete(context);
   }
 
   async getImage(key: string) {
-    return this.imageRepository.getImage(key);
+    return this.imageRepository.get(key);
   }
 
 }

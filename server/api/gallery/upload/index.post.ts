@@ -17,18 +17,27 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
 
     const { image, title, description } = input.data;
 
-    const account = event.context.user;
+    const { username } = event.context.user;
 
-    await GalleryService.getInstance().uploadImage({
+    const success = await GalleryService.getInstance().uploadImage({
       image,
       title,
       description,
-      username: account.username,
+      username,
     });
+
+    if (success) {
+      return createEventResponse({
+        event,
+        success: true,
+      });
+    }
 
     return createEventResponse({
       event,
-      success: true,
+      success: false,
+      code: 500,
+      message: 'Upload failed, try again.',
     });
 
   } catch (error) {

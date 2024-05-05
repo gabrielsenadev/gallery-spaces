@@ -1,18 +1,22 @@
-import { DeleteImageInputContext, EventExecutorData, UploadImageInputContext } from '../type';
-import { uploadImageInputSchema } from '../schema';
-import { GalleryRepository } from '../repository/GalleryRepository';
-import { AuthRepository } from '../repository';
+import { UploadImageInputContext, DeleteImageInputContext } from '~/server/dto/gallery'
+import { uploadImageInputSchema } from '~/server/schema';
+import { AuthRepository, ImageRepository, GalleryRepository } from '~/server/repository';
+import { getSeparator } from '~/server/utils/environment';
+import { v4 } from 'uuid';
+import { EventExecutorData } from '~/server/type';
 
 export class GalleryService {
 
   private static _instance: GalleryService;
   private galleryRepository: GalleryRepository;
   private authRepository: AuthRepository;
+  private imageRepository: ImageRepository;
 
   private constructor() {
     GalleryService._instance = this;
     this.galleryRepository = GalleryRepository.getInstance();
     this.authRepository = AuthRepository.getInstance();
+    this.imageRepository = ImageRepository.getInstance();
   }
 
   public static getInstance() {
@@ -21,6 +25,10 @@ export class GalleryService {
     }
 
     return GalleryService._instance;
+  }
+
+  private createGalleryImageKey(username: string, key: string) {
+    return `${username}${getSeparator()}${key}`;
   }
 
   async getUploadRequestInput(event: EventExecutorData) {
@@ -35,12 +43,36 @@ export class GalleryService {
     return uploadImageInputSchema.safeParse(dirtyInput);
   }
 
-  async uploadImage(context: UploadImageInputContext) {
-    return this.galleryRepository.uploadImage(context);
+  async uploadImage({ username, description, image, title }: UploadImageInputContext) {
+    try {
+      const imageKey = v4().substring(0, 12);
+      const key = this.createGalleryImageKey(username, imageKey);
+
+      await this.imageRepository.upload({
+        image,
+        key,
+        overwrite: false,
+      });
+
+      const imageUrl = `/api/image/view/${key}`;
+
+      await this.galleryRepository.setImageGallery({
+        description,
+        imageUrl,
+        key,
+        title,
+      });
+
+      return true;
+    } catch (error) {
+      console.error('Unhandled error ', error);
+      return false;
+    }
   }
 
   async deleteImage(context: DeleteImageInputContext) {
-    return this.galleryRepository.deleteImage(context);
+    const key = this.createGalleryImageKey(context.username, context.image);
+    return this.imageRepository.delete({ key });
   }
 
   async getImages(username: string) {
