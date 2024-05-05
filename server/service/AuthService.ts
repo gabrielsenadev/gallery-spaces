@@ -96,7 +96,7 @@ export class AuthService {
           key: imageKey,
           overwrite: true,
         });
-        imageUrl = `/api/image/view/${imageKey}`;
+        imageUrl = `/api/image/view?key=${imageKey}`;
       }
 
       await this.authRepository.createUser({
