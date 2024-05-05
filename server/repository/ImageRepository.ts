@@ -1,16 +1,14 @@
 import { Store, getStore } from '@netlify/blobs';
 import { DeleteImageInputContext, UploadImageInputContext } from '~/server/dto/image';
-import { Repository } from './Repository';
 import { ImageAlreadyExists } from '../error/ImageAlreadyExists';
 import { ImageNotFound } from '../error/ImageNotFound';
 
-export class ImageRepository extends Repository {
+export class ImageRepository {
 
   private static _instance: ImageRepository;
   private store: Store;
 
   private constructor() {
-    super();
     ImageRepository._instance = this;
 
     const { netlifySiteId, netlifyToken } = useRuntimeConfig();

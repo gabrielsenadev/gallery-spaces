@@ -1,25 +1,14 @@
 import { Store, getStore } from '@netlify/blobs';
-import { SetImageGalleryInputContext, DeleteImageInputContext, UploadImageInputContext } from '~/server/dto/gallery';
-import { Repository } from './Repository';
-import { v4 as uuidv4 } from 'uuid';
+import { SetImageGalleryInputContext, DeleteImageInputContext } from '~/server/dto/gallery';
 import { ImageGallery } from '../type';
+import { getSeparator } from '../utils';
 
-export type GetPincodeHashInputContext = {
-  username: string;
-};
-
-export type CreateUserInputContext = {
-  username: string;
-  pincodeHash: string;
-};
-
-export class GalleryRepository extends Repository {
+export class GalleryRepository {
 
   private static _instance: GalleryRepository;
   private store: Store;
 
   private constructor() {
-    super();
     GalleryRepository._instance = this;
 
     const { netlifySiteId, netlifyToken } = useRuntimeConfig();
@@ -40,7 +29,7 @@ export class GalleryRepository extends Repository {
   }
 
   private createImageKey(username: string, imageId: string) {
-    return `${username}${this.separator}${imageId}`;
+    return `${username}${getSeparator()}${imageId}`;
   }
 
   async setImageGallery({
