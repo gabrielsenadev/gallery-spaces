@@ -1,15 +1,18 @@
 import { DeleteImageInputContext, EventExecutorData, UploadImageInputContext } from '../type';
 import { uploadImageInputSchema } from '../schema';
 import { GalleryRepository } from '../repository/GalleryRepository';
+import { AuthRepository } from '../repository';
 
 export class GalleryService {
 
   private static _instance: GalleryService;
   private galleryRepository: GalleryRepository;
+  private authRepository: AuthRepository;
 
   private constructor() {
     GalleryService._instance = this;
     this.galleryRepository = GalleryRepository.getInstance();
+    this.authRepository = AuthRepository.getInstance();
   }
 
   public static getInstance() {
@@ -41,7 +44,16 @@ export class GalleryService {
   }
 
   async getImages(username: string) {
-    return this.galleryRepository.getImages(username);
+    try {
+      const user = await this.authRepository.getUser(username);
+      if (!user) {
+        return null;
+      }
+      return this.galleryRepository.getImages(username);
+    } catch (error) {
+      console.log('Unhandled error', error);
+      return null;
+    }
   }
 
   async getImage(username: string, imageId: string) {

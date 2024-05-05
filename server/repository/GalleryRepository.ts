@@ -72,6 +72,7 @@ export class GalleryRepository extends Repository {
     const imagesIds = await this.store.list({
       prefix: username,
     });
+
     const result = await Promise.all(imagesIds.blobs.map(async ({ key }) => {
       const metadata = await this.store.getMetadata(key);
       const [, imageKey] = key.split(this.separator);
