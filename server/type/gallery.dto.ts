@@ -1,5 +1,7 @@
+import { ImageFile } from ".";
+
 export type UploadImageInputContext = {
-  image: File;
+  image: ImageFile;
   title: string;
   username: string;
   description?: string | null;
