@@ -25,7 +25,14 @@ export class AuthRepository extends Repository {
   private constructor() {
     super()
     AuthRepository._instance = this;
-    this.store = getStore('auth');
+
+    const { netlifySiteId, netlifyToken } = useRuntimeConfig();
+    
+    this.store = getStore({
+      name: 'auth',
+      siteID: netlifySiteId,
+      token: netlifyToken,
+    });
   }
 
   public static getInstance() {

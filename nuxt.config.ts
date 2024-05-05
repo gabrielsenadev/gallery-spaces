@@ -8,5 +8,7 @@ export default defineNuxtConfig({
     pincodeSalt: '',
     authTokenSecret: '',
     storeKeySeparator: '',
+    netlifySiteId: '',
+    netlifyToken: '',
   },
 })

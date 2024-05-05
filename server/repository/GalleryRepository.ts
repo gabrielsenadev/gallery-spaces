@@ -20,7 +20,14 @@ export class GalleryRepository extends Repository {
   private constructor() {
     super();
     GalleryRepository._instance = this;
-    this.store = getStore('gallery');
+
+    const { netlifySiteId, netlifyToken } = useRuntimeConfig();
+
+    this.store = getStore({
+      name: 'gallery',
+      siteID: netlifySiteId,
+      token: netlifyToken,
+    });
   }
 
   public static getInstance() {
