@@ -16,9 +16,9 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
       });
     }
 
-    const { username } = input.data;
+    const { gallery } = input.data;
 
-    const images = await GalleryService.getInstance().getImages(username);
+    const images = await GalleryService.getInstance().getImages(gallery);
 
     if (!images) {
       return createEventResponse({
@@ -33,8 +33,8 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
       event,
       success: true,
       data: {
+        gallery,
         images,
-        gallery: username,
       },
     });
 

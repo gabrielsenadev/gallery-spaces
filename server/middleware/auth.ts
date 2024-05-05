@@ -10,7 +10,7 @@ const AUTH_ROUTES = [
 export default defineEventHandler(async (event) => {
   const url = getRequestURL(event);
   
-  if (!AUTH_ROUTES.includes(url.pathname)) {
+  if (!AUTH_ROUTES.some(route => url.pathname.startsWith(route))) {
     return;
   }
   

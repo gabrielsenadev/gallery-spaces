@@ -78,9 +78,11 @@ export class GalleryService {
   async getImages(username: string) {
     try {
       const user = await this.authRepository.getUser(username);
+
       if (!user) {
         return null;
       }
+
       return this.galleryRepository.getImages(username);
     } catch (error) {
       console.log('Unhandled error', error);
@@ -88,8 +90,13 @@ export class GalleryService {
     }
   }
 
-  async getImage(username: string, imageId: string) {
-    return this.galleryRepository.getImage(username, imageId);
+  async getGalleries() {
+    try {
+      return this.galleryRepository.getGalleries();
+    } catch (error) {
+      console.log('Unhandled error', error);
+      return null;
+    }
   }
 
 }

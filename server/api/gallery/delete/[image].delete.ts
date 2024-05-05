@@ -6,7 +6,7 @@ import { ImageNotFound } from "~/server/error/ImageNotFound";
 
 export default eventHandler(async (event): Promise<EventExecutorResponse> => {
   try {
-    const input = await getValidatedQuery(event, deleteImageInputSchema.safeParse);
+    const input = await getValidatedRouterParams(event, deleteImageInputSchema.safeParse);
 
   if (!input.success) {
     return createEventResponse({

@@ -3,3 +3,9 @@ export type ImageFile = {
   size: number;
   arrayBuffer: any;
 };
+
+export type ImageGallery = {
+  description: string;
+  imageUrl: string;
+  title: string;
+};

@@ -2,6 +2,7 @@ import { Store, getStore } from '@netlify/blobs';
 import { SetImageGalleryInputContext, DeleteImageInputContext, UploadImageInputContext } from '~/server/dto/gallery';
 import { Repository } from './Repository';
 import { v4 as uuidv4 } from 'uuid';
+import { ImageGallery } from '../type';
 
 export type GetPincodeHashInputContext = {
   username: string;
@@ -42,24 +43,6 @@ export class GalleryRepository extends Repository {
     return `${username}${this.separator}${imageId}`;
   }
 
-  async uploadImage({
-    description,
-    title,
-    username
-  }: UploadImageInputContext) {
-    this.store.setJSON();
-    const imageId = uuidv4().substring(0, 12);
-    const key = this.createImageKey(username, imageId);
-    const buffer = await image.arrayBuffer();
-    return this.store.set(key, buffer, {
-      metadata: {
-        title,
-        description,
-        type: image.type,
-      },
-    });
-  }
-
   async setImageGallery({
     description,
     imageUrl,
@@ -82,27 +65,25 @@ export class GalleryRepository extends Repository {
   }
 
   async getImages(username: string) {
-    const imagesIds = await this.store.list({
+    const images = await this.store.list({
       prefix: username,
     });
 
-    const result = await Promise.all(imagesIds.blobs.map(async ({ key }) => {
-      const metadata = await this.store.getMetadata(key);
-      const [, imageKey] = key.split(this.separator);
-      return {
-        imageUrl: `/api/gallery/view/${username}/${imageKey}`,
-        title: metadata?.metadata.title,
-        description: metadata?.metadata.description,
-      };
+    return Promise.all(images.blobs.map(async ({ key }) => {
+      return (await this.store.get(key)) as unknown as ImageGallery;
     }));
-
-    return result;
   }
 
-  async getImage(username: string, imageId: string) {
-    const key = this.createImageKey(username, imageId);
-    return this.store.getWithMetadata(key, {
-      type: 'blob',
+  async getGalleries() {
+    const galleries = await this.store.list({
+      directories: true,
+    });
+
+    return galleries.directories.map(gallery => {
+      return {
+        gallery,
+        url: `/api/gallery/view/${gallery}`,
+      };
     });
   }
 }
