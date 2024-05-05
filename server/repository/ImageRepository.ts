@@ -29,7 +29,7 @@ export class ImageRepository {
   }
 
   get(key: string) {
-    return this.store.getWithMetadata(key, { type: 'blob' });
+    return this.store.get(key, { type: 'blob' });
   }
 
   async upload({
@@ -43,12 +43,7 @@ export class ImageRepository {
       throw new ImageAlreadyExists();
     }
 
-    const buffer = await image.arrayBuffer();
-    return this.store.set(key, buffer, {
-      metadata: {
-        type: image.type,
-      },
-    });
+    return this.store.set(key, image);
   }
 
   async delete({

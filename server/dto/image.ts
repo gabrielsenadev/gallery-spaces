@@ -1,7 +1,7 @@
 import { ImageFile } from "~/server/type";
 
 export type UploadImageInputContext = {
-  image: ImageFile;
+  image: Blob;
   key: string;
   overwrite: boolean;
 };

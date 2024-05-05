@@ -2,7 +2,7 @@ import { z } from "zod";
 
 const MAX_IMAGE_SIZE = 5 * 1024 * 1024 * 1024;
 
-export const imageSchema = z.any()
+export const imageSchema = z.instanceof(Blob)
 .refine(file => file?.type?.startsWith('image'), {
   message: 'Invalid image type.',
 }).refine((file) => {

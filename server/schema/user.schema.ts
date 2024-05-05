@@ -20,7 +20,7 @@ export const loginUserInputSchema = z.object({
 
 export const createUserInputSchema = z.object({
   ...loginUserInputSchema.shape,
-  image: imageSchema.optional().nullable(),
+  image: imageSchema.optional().nullable().default(null),
 }, {
   message: 'Input with username and password properties is required.',
 });

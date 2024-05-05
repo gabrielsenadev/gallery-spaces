@@ -1,10 +1,8 @@
-import { ImageFile } from "../type";
-
 export type UploadImageInputContext = {
   username: string;
   title: string;
   description: string;
-  image: ImageFile;
+  image: Blob;
 };
 
 export type SetImageGalleryInputContext = {

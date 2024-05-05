@@ -35,5 +35,5 @@ export type CheckPasswordInputContext = {
 export type CreateUserInputContext = {
   username: string;
   password: string;
-  image: ImageFile | null;
+  image: Blob | null;
 };

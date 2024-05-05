@@ -45,7 +45,6 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
       },
     });
   } catch (error) {
-
     if (error instanceof UserNotFoundError) {
       return createEventResponse({
         event,

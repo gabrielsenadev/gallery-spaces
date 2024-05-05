@@ -26,20 +26,8 @@ export default eventHandler(async (event) => {
         message: 'Image not found.',
       });
     }
-
-    if (!image.metadata.type || typeof image.metadata.type !== 'string') {
-      return createEventResponse({
-        event,
-        code: 500,
-        success: false,
-        message: 'Invalid image format type.',
-      });
-    }
-
-    setResponseHeader(event, 'content-type', image.metadata.type);
-    setResponseHeader(event, 'content-length', image.data.size);
     
-    return image.data;
+    return image;
   } catch (error) {
     console.log('Unhandled error', error);
     return createEventResponse({
