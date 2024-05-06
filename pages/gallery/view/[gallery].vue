@@ -58,7 +58,7 @@ const { data, pending: isLoading } = useFetch<{
   data: GalleryData
 }>(`/api/gallery/view/${gallery}`);
 
-const galleryData = data.value?.data;
+const galleryData = computed(() => data.value?.data);
 
 console.log('data', data.value?.data, 'pendin', isLoading);
 
