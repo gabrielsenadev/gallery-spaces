@@ -25,6 +25,4 @@ type GalleryMarqueeCard = {
 
 const { gallery, profileImageUrl, url } = defineProps<GalleryMarqueeCard>();
 
-console.log('uyrl', profileImageUrl, url);
-
 </script>

@@ -30,6 +30,14 @@ export default defineNuxtConfig({
     rootTag: 'body',
   },
 
+  postcss: {
+    plugins: {
+      cssnano: process.env.NODE_ENV === 'production'
+      ? { preset: ['default', { discardComments: { removeAll: true } }] }
+      : false,
+    },
+  },
+
   modules: ['@nuxtjs/tailwindcss', ['@nuxtjs/google-fonts', {
     families: {
       Inter: [400, 600, 700],
