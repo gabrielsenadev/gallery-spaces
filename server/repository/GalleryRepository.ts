@@ -80,6 +80,7 @@ export class GalleryRepository {
         return {
           gallery,
           url: `/api/gallery/view/${gallery}`,
+          profileImageUrl: `/api/image/view?key=${gallery}${getSeparator()}profileImage`
         }
       })
     }
@@ -88,6 +89,7 @@ export class GalleryRepository {
       return {
         gallery,
         url: `/api/gallery/view/${gallery}`,
+        profileImageUrl: `/api/image/view?key=${gallery}${getSeparator()}profileImage`,
       };
     });
   }
