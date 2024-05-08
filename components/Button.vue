@@ -1,8 +1,8 @@
 <template>
   <button
-    v-bind="props"
+    v-bind="attrs"
     class="rounded-md p-2 px-6 transition-colors"
-    :class="variantClasses"
+    :class="[variantClasses]"
     @click="$emit('click', $event)"
   >
     {{ text }}
@@ -21,6 +21,8 @@ type ButtonProps = {
 const { text, variant, ...props } = withDefaults(defineProps<ButtonProps>(), {
   type: 'button',
 });
+
+const attrs = useAttrs();
 
 const variantClasses = computed(() => {
   return {

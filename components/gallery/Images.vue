@@ -1,5 +1,5 @@
 <template>
-  <section class="flex gap-8 mx-10">
+  <section class="flex gap-8 mx-10 flex-wrap">
     <div v-for="image in images" :key="image.imageUrl" class="relative cursor-pointer group" @click.stop="$emit('open', image)">
       <NuxtImg provider="netlify" :src="image.imageUrl" height="300" width="300" fit="cover"
         class="rounded-2xl hover:bg-black hover:bg-blend-darken" />
