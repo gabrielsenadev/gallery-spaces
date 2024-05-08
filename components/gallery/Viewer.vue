@@ -8,12 +8,18 @@
       @open="onOpen"
     />
     <GalleryNotFoundImages v-else />
-    <GalleryImageViewerModal />
+    <GalleryImageViewerModal
+      v-if="currentImage"
+      :image="currentImage"
+      @close="onClose"
+    />
   </section>
 </template>
 
 <script lang="ts" setup>
-import type { GalleryData } from '~/types/gallery';
+import type { GalleryData, GalleryImage } from '~/types/gallery';
+
+const currentImage = ref<GalleryImage | null>(null);
 
 const { gallery } = defineProps<{
   gallery: GalleryData;
@@ -23,9 +29,14 @@ const onDelete = (id: string) => {
   console.log('del', id);
 };
 
-const onOpen = (id: string) => {
-  console.log('open', id);
+const onOpen = (image: GalleryImage) => {
+  currentImage.value = image;
 };
+
+const onClose = () => {
+  currentImage.value = null;
+};
+
 </script>
 
 <style></style>
