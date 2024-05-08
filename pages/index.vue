@@ -10,9 +10,7 @@
       </h1>
       <p class="font-sans font-normal text-gray text-xl">Create your own gallery and share to everyone. Join us and see
         your gallery below.</p>
-        <section class="w-full flex-col gap-4 flex">
-          <GalleriesMarquee />
-        </section>
+      <HomeGalleryMarquee />
     </main>
     <NuxtLink href="https://unsplash.com/@heytowner" target="_blank" class="text-white/80">
       Wallpaper by John Towner on Unsplash

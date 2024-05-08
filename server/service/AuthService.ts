@@ -87,9 +87,9 @@ export class AuthService {
     try {
       const { passwordSalt } = useRuntimeConfig();
       const passwordHash = bcrypt.hashSync(password, passwordSalt);
-      let imageUrl = '/api/image/view/?key=default';
+      let imageUrl = '/api/image/view?key=default';
       const imageKey = this.createUserImageKey(username);
-
+      
       if (image) {
         await this.imageRepository.upload({
           image,

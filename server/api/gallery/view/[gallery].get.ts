@@ -35,9 +35,11 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
       event,
       success: true,
       data: {
-        gallery,
         images,
-        galleryImage: profileImage,
+        user: {
+          username: gallery,
+          profileImageUrl: profileImage,
+        },
       },
     });
 

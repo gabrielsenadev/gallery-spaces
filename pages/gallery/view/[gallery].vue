@@ -1,65 +1,44 @@
 <template>
-  <main class="text-white">
-    <div v-if="!isLoading && !!galleryData" class="flex flex-col gap-10">
-      <header class="flex flex-col justify-center items-center">
-        <NuxtImg
-          provider="netlify"
-          :src="galleryData.galleryImage"
-          height="256"
-          width="256"
-          fit="cover"
-          class="rounded-full"
-        />
-        <h2 class="font-bold text-2xl font-sans text-black dark:text-white">@{{ galleryData.gallery }}</h2>
-      </header>
-      <section class="flex gap-8 mx-10">
-        <div
-          v-for="image in galleryData.images"
-          :key="image.imageUrl"
-          class="relative cursor-pointer group"
-          >
-          <NuxtImg
-          provider="netlify"
-          :src="image.imageUrl"
-          height="300"
-          width="300"
-          fit="cover"
-          class="rounded-2xl hover:bg-black hover:bg-blend-darken"
-        />
-        <div class="invisible absolute inset-0 bg-black/25 items-end rounded-2xl group-hover:visible flex justify-end p-4">
-          <PhTrash class="text-white hover:text-red-400" :size="32"/>
-        </div>
-        </div>
-      </section>
-    </div>
+  <main
+    class="text-white flex flex-col h-full overflow-auto bg-black bg-blend-darken bg-cover p-4"
+    :class="[isLoading ? 'items-center justify-center flex' : `bg-[url('${galleryWallpaperUrl}')]`]" :key="renderKey">
+    <Loading v-if="isLoading" />
+    <Transition mode="out-in" v-else>
+      <GalleryNotFound v-if="!galleryData" />
+      <GalleryViewer v-else :gallery="galleryData" />
+    </Transition>
   </main>
 </template>
 
 <script setup lang="ts">
-import { PhTrash } from '@phosphor-icons/vue';
-
-type GalleryImage = {
-  description: string;
-  imageUrl: string;
-  title: string;
-};
-
-type GalleryData = {
-  gallery: string;
-  galleryImage: string;
-  images: GalleryImage[];
-};
+import type { GalleryData } from '~/types/gallery';
 
 const route = useRoute();
 
 const gallery = route.params.gallery;
 
-const { data, pending: isLoading } = useFetch<{
+const { data, pending } = useFetch<{
   data: GalleryData
 }>(`/api/gallery/view/${gallery}`);
 
+const renderKey = ref(0);
+
 const galleryData = computed(() => data.value?.data);
 
-console.log('data', data.value?.data, 'pendin', isLoading);
+const isLoading = computed(() => pending.value);
+
+const galleryWallpaperUrl = computed(() => {
+  const images = galleryData.value?.images;
+  if (!images?.length) {
+    return '/public/home-background.jpg';
+  }
+
+  const randomIndex = Math.min(Math.round(Math.random() * 10), images.length - 1);
+  return images[randomIndex].imageUrl;
+});
+
+watch(galleryData, () => {
+  renderKey.value++;
+});
 
 </script>

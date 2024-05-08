@@ -1,19 +1,29 @@
 <template>
+  <component :is="parentTag" class="w-full flex-col gap-4 flex">
     <Vue3Marquee v-for="(galleryGroup, groupIndex) in galleriesGroups" :key="groupIndex" pauseOnHover
       clone :delay="getGroupDelay(groupIndex)" :duration="getGroupDuration(groupIndex)">
-      <GalleryMarqueeCard v-for="(gallery, index) in galleryGroup" :gallery="gallery.gallery"
+      <HomeGalleryMarqueeItem v-for="(gallery, index) in galleryGroup" :gallery="gallery.gallery"
         :profile-image-url="gallery.profileImageUrl" :url="gallery.url" :key="index" class="mx-4" />
     </Vue3Marquee>
+  </component>
 </template>
 
 <script setup lang="ts">
 import { Vue3Marquee } from 'vue3-marquee';
+
+type GalleriesMarqueeProps = {
+  parentTag?: keyof HTMLElementTagNameMap;
+}
 
 type GalleryListItem = {
   gallery: string;
   url: string;
   profileImageUrl: string;
 };
+
+const { parentTag } = withDefaults(defineProps<GalleriesMarqueeProps>(), {
+  parentTag: 'section',
+}) 
 
 const { data } = await useFetch<{
   data: GalleryListItem[],
