@@ -1,7 +1,8 @@
 <template>
   <div class="flex flex-col gap-1">
     <label :for="componentInputId">{{ label }}</label>
-    <select :name="componentInputId" :id="componentInputId" v-bind="$attrs" class="px-4 py-2 rounded-lg bg-neutral-100 text-black border">
+    <select :name="componentInputId" :id="componentInputId" v-bind="$attrs" v-model="model"
+      class="px-4 py-2 rounded-lg bg-neutral-100 text-black border">
       <option v-for="option in options" :key="option" :value="option"> {{ option }}</option>
     </select>
   </div>
@@ -17,6 +18,8 @@ type InputSelectProps = {
 }
 
 const key = ref(++localId);
+
+const model = defineModel();
 
 const { options, label } = defineProps<InputSelectProps>();
 

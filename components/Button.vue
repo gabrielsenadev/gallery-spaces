@@ -1,7 +1,7 @@
 <template>
   <button
     v-bind="attrs"
-    class="rounded-md p-2 px-6 transition-colors"
+    class="rounded-md p-2 px-6 transition-colors "
     :class="[variantClasses]"
     @click="$emit('click', $event)"
   >
@@ -27,7 +27,7 @@ const attrs = useAttrs();
 const variantClasses = computed(() => {
   return {
       'bg-white text-black hover:bg-white/90': variant === 'primary',
-      'bg-black text-white hover:bg-black/90': variant === 'secondary',
+      'bg-black text-white hover:bg-black/90 disabled:bg-black/70': variant === 'secondary',
       'bg-transparent text-white hover:text-white/80': variant === 'outline',
     };
 });

@@ -2,6 +2,7 @@
   <main
     class="text-white flex flex-col h-full overflow-auto bg-black bg-blend-darken bg-cover p-4"
     :class="[isLoading ? 'items-center justify-center flex' : `bg-[url('${galleryWallpaperUrl}')]`]" :key="renderKey">
+    <ActionHeader />
     <Loading v-if="isLoading" />
     <Transition mode="out-in" v-else>
       <GalleryNotFound v-if="!galleryData" />
@@ -30,7 +31,7 @@ const isLoading = computed(() => pending.value);
 const galleryWallpaperUrl = computed(() => {
   const images = galleryData.value?.images;
   if (!images?.length) {
-    return '/public/home-background.jpg';
+    return '/home-background.jpg';
   }
 
   const randomIndex = Math.min(Math.round(Math.random() * 10), images.length - 1);

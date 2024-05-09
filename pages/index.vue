@@ -1,9 +1,6 @@
 <template>
   <main class="bg-mainBg bg-cover h-full bg-center bg-black/40 bg-blend-darken flex flex-col overflow-auto">
-    <header class="flex gap-3 justify-end p-8">
-      <Button variant="outline" text="Login" />
-      <Button variant="primary" text="Sign Up" />
-    </header>
+    <ActionHeader />
     <main class="flex justify-center text-center flex-1 items-center flex-col gap-2 w-full">
       <h1 class="font-sans font-bold text-5xl text-white">
         Welcome to Gallery Spaces!
