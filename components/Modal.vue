@@ -10,7 +10,7 @@
       <div class="modal-header flex items-start p-2">
         <slot name="header" />
         <button class="ml-auto cursor-pointer text-slate-600 hover:text-black transition-colors" type="button"
-          @click="$emit('close')">
+          @click="emit('close')">
           <PhX size="32" />
         </button>
       </div>
@@ -29,13 +29,12 @@ import { PhX } from '@phosphor-icons/vue';
 
 type ModalSize = 'sm' | 'lg' | 'xs';
 
-const { size, isOpen } = withDefaults(defineProps<{
+const emit = defineEmits(['close']);
+
+const { size, isOpen } = defineProps<{
   size: ModalSize;
   isOpen: boolean;
-}>(), {
-  size: 'sm',
-  isOpen: false,
-});
+}>();
 
 </script>
 

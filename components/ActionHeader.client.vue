@@ -1,10 +1,10 @@
 <template>
   <header class="flex gap-3 justify-end p-8">
-    <Button variant="outline" text="Login" v-if="showSignUpAndLoginButton"/>
+    <Button variant="outline" text="Login" v-if="showSignUpAndLoginButton" @click="updateModalVisibility('login', true)"/>
     <Button variant="outline" text="Go to gallery" v-if="showGoToGalleryButton"/>
     <Button variant="primary" text="Sign Up" v-if="showSignUpAndLoginButton" />
     <Button variant="primary" text="Upload" v-if="showUploadButton"/>
-    <HeaderLoginModal />
+    <HeaderLoginModal @close="updateModalVisibility('login', false)" :is-open="modalVisibility.login" prop2="23"/>
   </header>
 </template>
 
@@ -12,6 +12,19 @@
 
 const { isAuthenticated } = useAuth();
 const { isOnGalleryRoute, isOnOwnGallery } = useGallery();
+
+type ModalType = 'login' | 'signup' | 'upload';
+
+const modalVisibility = reactive<Record<ModalType, boolean>>({
+  login: false,
+  signup: false,
+  upload: false,
+});
+
+function updateModalVisibility(modal: ModalType, value: boolean) {
+  console.log('closing');
+  modalVisibility[modal] = value;
+}
 
 const showUploadButton = computed(() => {
   return isOnGalleryRoute.value && isOnOwnGallery.value;

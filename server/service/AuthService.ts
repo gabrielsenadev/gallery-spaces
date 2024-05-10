@@ -6,7 +6,7 @@ import { UserNotFoundError } from '../error/UserNotFound';
 import { getSeparator } from '../utils';
 import { UserCreationFailed } from '../error/UserCreationFailed';
 import { CheckInputContext, CheckPasswordInputContext, CreateJWTTokenInputContext, CreateUserInputContext, GenerateJWTTokenInputContext, GetDataInputContext } from '~/server/dto/auth';
-import { EventExecutorData } from '../type';
+import { AuthUser, EventExecutorData } from '../type';
 import { createUserInputSchema } from '../schema';
 
 export class AuthService {
@@ -144,10 +144,10 @@ export class AuthService {
       if (userDataToken !== token) {
         throw new InvalidUserToken();
       }
-      return user;
+      return user as AuthUser;
     } catch (error) {
       console.error('Login verification failed', error);
-      return false;
+      throw error;
     }
   }
 

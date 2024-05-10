@@ -1,3 +1,4 @@
+import { H3Error } from "h3";
 import { UserWithoutTokenError } from "~/errors/UserWithoutTokenError";
 
 type AuthUser = {
@@ -13,6 +14,7 @@ type LoginResponse = {
   success: boolean;
   data: {
     token: string;
+    user: AuthUser;
   };
   message: string;
 };
@@ -32,52 +34,28 @@ const user = ref<AuthUser | null>(null);
 const isAuthenticated = computed(() => !!user.value);
 
 export const useAuth = () => {
-
   const init = async () => {
-    const token = await localStorage.getItem('auth:token');
+    const token = await localStorage.getItem("auth:token");
     if (token) {
       fetchUser();
     }
   };
 
   async function login({ username, password }: LoginInput) {
-    try {
-      const { data, error } = await useFetch<LoginResponse, ErrorResponse>("/api/auth/login", {
-        body: JSON.stringify({
-          username,
-          password,
-        }),
-        method: "POST",
-      });
+    const response = await $fetch<LoginResponse>("/api/auth/login", {
+      body: JSON.stringify({
+        username,
+        password,
+      }),
+      method: "POST",
+    });
 
-      if (!data.value) {
-        return {
-          success: false,
-          message: error.value?.message,
-        };
-      }
-  
-      if (data.value.success) {
-        localStorage.setItem("auth:token", data.value.data.token);
-        fetchUser();
-        return {
-          success: true,
-        };
-      }
-
-      return {
-        success: false,
-        message: data.value.message,
-      };
-    } catch (error) {
-      if (error instanceof Error) {
-        return {
-          success: false,
-          message: error.message,
-        }
-      }
-    }
-  };
+    localStorage.setItem("auth:token", response.data.token);
+    user.value = response.data.user;
+    return {
+      success: true,
+    };
+  }
 
   const getUserTokenAuthorizationHeader = async () => {
     const token = await localStorage.getItem("auth:token");
@@ -94,19 +72,19 @@ export const useAuth = () => {
     try {
       const header = await getUserTokenAuthorizationHeader();
 
-      const { data, error } = await useFetch<GetAuthUserResponse, ErrorResponse>("/api/auth/logout", {
+      const response = await $fetch<GetAuthUserResponse>("/api/auth/logout", {
         headers: header,
         method: "POST",
       });
 
-      if (!data.value) {
+      if (!response.data) {
         return {
           success: false,
-          message: error,
+          message: response.message,
         };
       }
 
-      if (data.value.success) {
+      if (response.success) {
         localStorage.removeItem("auth:token");
         return {
           success: true,
@@ -115,36 +93,36 @@ export const useAuth = () => {
 
       return {
         success: false,
-        message: data.value.message,
+        message: response.message,
       };
     } catch (error) {
-      if (error instanceof Error) {
+      if (error instanceof H3Error) {
         return {
           success: false,
-          message: error.message,
+          message: error.data.message,
         };
       }
     }
-  };
+  }
 
   async function fetchUser() {
     try {
       const header = await getUserTokenAuthorizationHeader();
 
-      const { data, error } = await useFetch<GetAuthUserResponse, ErrorResponse>("/api/auth/user", {
+      const response = await $fetch<GetAuthUserResponse>("/api/auth/user", {
         headers: header,
         method: "GET",
       });
 
-      if (!data.value) {
+      if (!response.data) {
         return {
           success: false,
-          message: error.value?.message,
+          message: response.message,
         };
       }
 
-      if (data.value.success) {
-        user.value = data.value.data;
+      if (response.success) {
+        user.value = response.data;
         return {
           success: true,
           data: user.value,
@@ -153,24 +131,25 @@ export const useAuth = () => {
 
       return {
         success: false,
-        message: data.value.message,
+        message: response.message,
       };
     } catch (error) {
-      if (error instanceof Error) {
-        return {
-          success: false,
-          message: error.message,
-        };
-      }
+      return {
+        success: false,
+        message: error.message,
+      };
     }
-  };
+  }
 
   async function signUp(form: FormData) {
     try {
-      const { data, error } = await useFetch<LoginResponse, ErrorResponse>("/api/auth/create", {
-        body: form,
-        method: "POST",
-      });
+      const { data, error } = await useFetch<LoginResponse, ErrorResponse>(
+        "/api/auth/create",
+        {
+          body: form,
+          method: "POST",
+        }
+      );
 
       if (!data.value) {
         return {
@@ -197,7 +176,7 @@ export const useAuth = () => {
         };
       }
     }
-  };
+  }
 
   init();
 

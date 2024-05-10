@@ -1,16 +1,17 @@
 <template>
-  <Modal size="sm" is-open>
+  <Modal size="sm" :is-open="isOpen" @close="emit('close')">
     <template #header>
       <h2 class="font-bold text-2xl">Login</h2>
     </template>
     <template #body>
+
       <section class="flex justify-center flex-col p-4">
-        <NuxtImg src="/logo.png" width="128" class="mx-auto" alt="gallery spaces logo"/>
+        <NuxtImg src="/logo.png" width="128" class="mx-auto" alt="gallery spaces logo" />
         <section class="flex flex-col flex-1 gap-4">
-          <InputText label="Username" v-model="form.username" placeholder="gabriel"/>
+          <InputText label="Username" v-model="form.username" placeholder="gabriel" />
           <InputPassword label="Password" placeholder="123456" v-model="form.password" />
-          <p v-show="errorMessage" class="text-red-600">{{ errorMessage }}</p>
-          <Button text="Login" variant="secondary" class="w-full" @click="onClickLogin" :disabled="!isValid"/>
+          <Button text="Login" variant="secondary" class="w-full" @click="onClickLogin" :disabled="!isValid || isLoading" />
+          <p class="text-red-500">{{ errorMessage }}</p>
         </section>
       </section>
     </template>
@@ -19,25 +20,43 @@
 
 <script lang="ts" setup>
 
-const { login, fetchUser } = useAuth();
+const { login } = useAuth();
+
+const emit = defineEmits(['close']);
+
+const { isOpen } = defineProps<{
+  isOpen: boolean;
+}>();
 
 const form = reactive({
   username: '',
   password: '',
 });
 
+const isLoading = ref(false);
+
 const errorMessage = ref('');
 
-const isValid = computed(() => form.password && form.username);
+const isValid = computed(() => !!form.password && !!form.username);
 
 const onClickLogin = async () => {
-  if (!form.password || !form.username) {
-    errorMessage.value = 'Please, fill all fields.';
+  if (isLoading.value) {
     return;
   }
 
-  await login(form);
-  // TODO
+  errorMessage.value = '';
+  isLoading.value = true;
+
+  login(form)
+  .then(({ success }) => {
+    if (success) {
+      // emit('close');
+    }
+  })
+  .catch((error) => errorMessage.value = error.data?.message ?? error.message)
+  .finally(() => {
+    isLoading.value = false;
+  });
 };
 
 </script>

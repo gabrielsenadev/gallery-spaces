@@ -37,11 +37,14 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
       username,
     });
 
+    const user = await AuthService.getInstance().getUserByToken(token);
+
     return createEventResponse({
       event,
       success: true,
       data: {
         token,
+        user,
       },
     });
   } catch (error) {

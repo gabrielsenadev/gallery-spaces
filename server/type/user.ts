@@ -3,3 +3,7 @@ export type User = {
   imageUrl: string;
   password: string;
 };
+
+export type AuthUser = {
+  username: string;
+};
