@@ -1,5 +1,5 @@
 <template>
-  <PhCircleNotch class="animate-spin text-black" :size="size" />
+  <PhCircleNotch class="animate-spin text-black" :size="size" v-bind="$attrs"/>
 </template>
 
 <script lang="ts" setup>
