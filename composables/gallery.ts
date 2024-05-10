@@ -1,10 +1,18 @@
 export const useGallery = () => {
   const { user, isAuthenticated } = useAuth();
   const { name: routeName, params } = useRoute();
+  const router = useRouter();
 
   const isOnGalleryRoute = computed(() => {
     return routeName === "gallery-view-gallery";
   });
+
+  function goToUserGallery() {
+    if (!isAuthenticated) {
+      return;
+    }
+    router.push(`/gallery/view/${user.value!.username}`);
+  }
 
   const isOnOwnGallery = computed(() => {
     if (!isAuthenticated.value || !isOnGalleryRoute.value) {
@@ -22,5 +30,6 @@ export const useGallery = () => {
   return {
     isOnGalleryRoute,
     isOnOwnGallery,
+    goToUserGallery,
   };
 };

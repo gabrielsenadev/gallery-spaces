@@ -20,6 +20,7 @@
 
 <script lang="ts" setup>
 
+const { goToUserGallery } = useGallery();
 const { login } = useAuth();
 
 const emit = defineEmits(['close']);
@@ -50,7 +51,8 @@ const onClickLogin = async () => {
   login(form)
   .then(({ success }) => {
     if (success) {
-      // emit('close');
+      emit('close');
+      goToUserGallery();
     }
   })
   .catch((error) => errorMessage.value = error.data?.message ?? error.message)
