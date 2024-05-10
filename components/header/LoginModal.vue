@@ -10,7 +10,7 @@
         <section class="flex flex-col flex-1 gap-4">
           <InputText label="Username" v-model="form.username" placeholder="gabriel" />
           <InputPassword label="Password" placeholder="123456" v-model="form.password" />
-          <Button text="Login" variant="secondary" class="w-full" @click="onClickLogin" :disabled="!isValid || isLoading" />
+          <Button variant="primary" :is-dark="false" class="w-full" @click="onClickLogin" :disabled="!isValid || isLoading" >Login</Button>
           <p class="text-red-500">{{ errorMessage }}</p>
         </section>
       </section>

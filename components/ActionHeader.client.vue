@@ -1,11 +1,11 @@
 <template>
   <header class="flex gap-3 justify-end p-8">
-    <Button variant="outline" text="Login" v-if="showSignUpAndLoginButton" @click="updateModalVisibility('login', true)"/>
-    <Button variant="outline" text="Logout" v-if="showLogoutButton" />
-    <Button variant="outline" text="My gallery" v-if="showGoToGalleryButton" @click="goToUserGallery"/>
-    <Button variant="primary" text="Sign Up" v-if="showSignUpAndLoginButton" />
-    <Button variant="primary" text="Upload" v-if="showUploadButton"/>
-    <HeaderLoginModal @close="updateModalVisibility('login', false)" :is-open="modalVisibility.login" prop2="23"/>
+    <Button variant="outline" v-if="showSignUpAndLoginButton" @click="updateModalVisibility('login', true)">Login</Button>
+    <Button variant="outline" v-if="showLogoutButton">Logout</Button>
+    <Button variant="outline" v-if="showGoToGalleryButton" @click="goToUserGallery">My gallery</Button>
+    <Button variant="primary" v-if="showSignUpAndLoginButton">Sign Up</Button>
+    <Button variant="primary" v-if="showUploadButton">Upload</Button>
+    <HeaderLoginModal @close="updateModalVisibility('login', false)" :is-open="modalVisibility.login"/>
   </header>
 </template>
 

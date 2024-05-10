@@ -1,35 +1,25 @@
 <template>
-  <button
-    v-bind="attrs"
-    class="rounded-md p-2 px-6 transition-colors "
-    :class="[variantClasses]"
-    @click="$emit('click', $event)"
-  >
-    {{ text }}
+  <button v-bind="$attrs" class="rounded-md p-2 px-6 transition-colors cursor-pointer" :class="[variantClasses]">
+    <slot />
   </button>
 </template>
 
 <script setup lang="ts">
-import type { ButtonHTMLAttributes } from 'vue';
 
 type ButtonProps = {
   variant: 'outline' | 'primary' | 'secondary';
-  text: string;
-  type?: ButtonHTMLAttributes['type'];
+  isDark?: boolean;
 }
 
-const { text, variant, ...props } = withDefaults(defineProps<ButtonProps>(), {
-  type: 'button',
+const { variant, isDark } = withDefaults(defineProps<ButtonProps>(), {
+  isDark: true,
+  variant: 'primary',
 });
-
-const attrs = useAttrs();
 
 const variantClasses = computed(() => {
   return {
-      'bg-white text-black hover:bg-white/90': variant === 'primary',
-      'bg-black text-white hover:bg-black/90 disabled:bg-black/70': variant === 'secondary',
-      'bg-transparent text-white hover:text-white/80': variant === 'outline',
-    };
+    [isDark ? 'text-black bg-white hover:bg-white/90' : 'text-white bg-black hover:bg-black/90']: variant === 'primary',
+    [isDark ? 'bg-transparent text-white hover:text-gray' : 'bg-transparent text-black hover:text-black/90']: variant === 'outline',
+  }
 });
-
 </script>

@@ -9,7 +9,7 @@ export default {
       colors: {
         white: '#FAFAF9',
         gray: '#BABAC3',
-        black: '#08080B',
+        black: '#141413',
       },
       backgroundImage: {
         mainBg: "url('/public/home-background.jpg')"

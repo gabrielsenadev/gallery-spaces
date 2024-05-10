@@ -28,7 +28,7 @@
               @change="onChange('format', $event.target.value)" />
             <InputNumber label="Quality" :value="transformsData.quality"
               @change="onChange('quality', $event.target.value)" :max="100" />
-            <Button type="button" variant="secondary" text="Download" @click="onClickDownload" class="mt-auto" />
+            <Button type="button" variant="primary" :is-dark="false" @click="onClickDownload" class="mt-auto" >Download</Button>
             <a :href="currentImageUrl" target="_blank" class="hidden" ref="downloadImageAnchorElement"
               download="image"></a>
           </div>

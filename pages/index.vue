@@ -14,4 +14,3 @@
     </NuxtLink>
   </main>
 </template>
-
