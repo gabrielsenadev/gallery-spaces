@@ -3,7 +3,7 @@
     class="text-white flex flex-col h-full overflow-auto bg-black bg-blend-darken bg-cover p-4"
     :class="[isLoading ? 'items-center justify-center flex' : `bg-[url('${galleryWallpaperUrl}')]`]" :key="renderKey">
     <ActionHeader />
-    <Loading v-if="isLoading" />
+    <Loading :size="128" v-if="isLoading" />
     <Transition mode="out-in" v-else>
       <GalleryNotFound v-if="!galleryData" />
       <GalleryViewer v-else :gallery="galleryData" />
@@ -18,7 +18,7 @@ const route = useRoute();
 
 const gallery = route.params.gallery;
 
-const { data, pending } = useFetch<{
+const { data, pending } = await useFetch<{
   data: GalleryData
 }>(`/api/gallery/view/${gallery}`);
 

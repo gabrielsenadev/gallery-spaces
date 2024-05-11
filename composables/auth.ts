@@ -49,6 +49,16 @@ async function signUp(form: FormData) {
   return true;
 }
 
+async function upload(form: FormData) {
+  const header = await getUserTokenAuthorizationHeader();
+  await $fetch<LoginResponse>("/api/gallery/upload", {
+    body: form,
+    method: "POST",
+    headers: header,
+  });
+  return true;
+}
+
 async function login({ username, password }: LoginInput) {
   const response = await $fetch<LoginResponse>("/api/auth/login", {
     body: JSON.stringify({
@@ -101,10 +111,11 @@ init();
 export const useAuth = () => {
   return {
     user,
-    fetchUser,
     login,
     logout,
     signUp,
+    upload,
+    fetchUser,
     isAuthenticated,
   };
 };
