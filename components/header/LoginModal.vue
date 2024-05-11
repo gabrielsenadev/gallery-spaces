@@ -49,7 +49,7 @@ const onClickLogin = async () => {
   isLoading.value = true;
 
   login(form)
-  .then(({ success }) => {
+  .then((success) => {
     if (success) {
       emit('close');
       goToUserGallery();

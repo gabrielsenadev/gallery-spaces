@@ -22,7 +22,7 @@ const { variant, isDark } = withDefaults(defineProps<ButtonProps>(), {
 
 const variantClasses = computed(() => {
   return {
-    [isDark ? 'text-black bg-white hover:bg-white/90' : 'text-white bg-black hover:bg-black/90']: variant === 'primary',
+    [isDark ? 'text-black bg-white hover:bg-white/90' : 'text-white bg-black hover:bg-black/90 disabled:bg-black/80 disabled:cursor-not-allowed']: variant === 'primary',
     [isDark ? 'bg-transparent text-white hover:text-gray' : 'bg-transparent text-black hover:text-black/90']: variant === 'outline',
   }
 });

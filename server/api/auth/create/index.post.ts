@@ -35,9 +35,16 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
       image
     });
 
+    const token = await AuthService.getInstance().generateJWTToken({ username });
+    const user = await AuthService.getInstance().getUserByToken(token);
+
     return createEventResponse({
       event,
       success: true,
+      data: {
+        token,
+        user,
+      },
     });
   } catch (error) {
     console.error('Unhandled error', error);

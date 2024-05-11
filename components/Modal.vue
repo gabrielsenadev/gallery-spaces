@@ -14,7 +14,7 @@
           <PhX size="32" />
         </button>
       </div>
-      <div class="modal-body flex-1 overflow-scroll">
+      <div class="modal-body flex-1 overflow-auto">
         <slot name="body" />
       </div>
       <div class="modal-footer" v-if="$slots['footer']">
