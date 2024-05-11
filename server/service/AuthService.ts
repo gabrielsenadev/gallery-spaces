@@ -6,7 +6,7 @@ import { UserNotFoundError } from '../error/UserNotFound';
 import { getSeparator } from '../utils';
 import { UserCreationFailed } from '../error/UserCreationFailed';
 import { CheckInputContext, CheckPasswordInputContext, CreateJWTTokenInputContext, CreateUserInputContext, GenerateJWTTokenInputContext, GetDataInputContext } from '~/server/dto/auth';
-import { EventExecutorData } from '../type';
+import { AuthUser, EventExecutorData } from '../type';
 import { createUserInputSchema } from '../schema';
 
 export class AuthService {
@@ -87,9 +87,9 @@ export class AuthService {
     try {
       const { passwordSalt } = useRuntimeConfig();
       const passwordHash = bcrypt.hashSync(password, passwordSalt);
-      let imageUrl = '/api/image/view/?key=default';
+      let imageUrl = '/api/image/view?key=default';
       const imageKey = this.createUserImageKey(username);
-
+      
       if (image) {
         await this.imageRepository.upload({
           image,
@@ -144,10 +144,10 @@ export class AuthService {
       if (userDataToken !== token) {
         throw new InvalidUserToken();
       }
-      return user;
+      return user as AuthUser;
     } catch (error) {
       console.error('Login verification failed', error);
-      return false;
+      throw error;
     }
   }
 
