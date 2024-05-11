@@ -1,7 +1,7 @@
 <template>
   <div class="flex flex-col gap-1">
-    <label :for="componentInputId" >{{ label }}</label>
-    <input type="text" :name="componentInputId" :id="componentInputId"
+    <label for="input-text" >{{ label }}</label>
+    <input type="text" name="input-text" id="input-text"
     class="px-4 py-2 border border-solid border-black rounded-lg appearance-none" v-bind="attrs" v-model="model" />
   </div>
 </template>
@@ -12,19 +12,11 @@ type InputTextProps = {
   label: string;
 }
 
-let localId = 0;
-
-const key = ref(++localId);
-
 const attrs = useAttrs();
 
 const model = defineModel();
 
 const { label } = defineProps<InputTextProps>();
-
-const componentInputId = computed(() => {
-  return `input-text-${key.value}`;
-});
 
 </script>
 
