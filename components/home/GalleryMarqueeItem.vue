@@ -11,6 +11,7 @@
       fit="cover"
       class="rounded-full"
       placeholder
+      loading="lazy"
     />
     {{ gallery }}
   </NuxtLink>
