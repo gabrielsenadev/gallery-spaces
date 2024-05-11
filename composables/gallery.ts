@@ -1,4 +1,4 @@
-import type { Gallery, GalleryData } from "~/types/gallery";
+import type { Gallery } from "~/types/gallery";
 
 
 async function deleteImage(imageId: string) {
@@ -22,7 +22,7 @@ async function uploadImage(form: FormData) {
 }
 
 const data = ref<Gallery| null>(null);
-const isLoading = ref(false);
+const isLoading = ref(true);
 const errorMessage = ref('');
 
 export const useGallery = () => {
