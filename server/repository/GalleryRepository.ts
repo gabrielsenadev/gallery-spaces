@@ -86,8 +86,9 @@ export class GalleryRepository {
     }
 
     return galleries.directories.map(gallery => {
+      const username = gallery.replace(/$\//, '');
       return {
-        gallery,
+        gallery: username,
         url: `/api/gallery/view/${gallery}`,
         profileImageUrl: `/api/image/view?key=${gallery}${getSeparator()}profileImage`,
       };

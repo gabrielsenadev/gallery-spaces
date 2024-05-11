@@ -1,5 +1,5 @@
 <template>
-  <section class="flex gap-8 mx-10 flex-wrap py-2">
+  <section class="flex gap-8 mx-10 flex-wrap py-8 justify-center">
     <template v-if="data?.images?.length">
         <div v-for="image in data.images" :key="image.imageUrl" class="relative cursor-pointer group" @click.stop="onOpen(image)">
           <NuxtImg provider="netlify" :src="image.imageUrl" height="300" width="300" fit="cover"
