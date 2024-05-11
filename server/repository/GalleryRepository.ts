@@ -87,10 +87,11 @@ export class GalleryRepository {
 
     return galleries.directories.map(gallery => {
       const username = gallery.replace(/$\//, '');
+      console.error('separator', gallery, username, getSeparator());
       return {
         gallery: username,
         url: `/api/gallery/view/${gallery}`,
-        profileImageUrl: `/api/image/view?key=${gallery}${getSeparator()}profileImage`,
+        profileImageUrl: `/api/image/view?key=${username}${getSeparator()}profileImage`,
       };
     });
   }
