@@ -4,15 +4,14 @@
       <h2 class="font-bold text-2xl">Login</h2>
     </template>
     <template #body>
-
       <section class="flex justify-center flex-col p-4">
-        <NuxtImg src="/logo.png" width="128" class="mx-auto" alt="gallery spaces logo" />
-        <section class="flex flex-col flex-1 gap-4">
+        <h3 class="text-2xl text-center font-bold my-4">Welcome back!</h3>
+        <form class="flex flex-col flex-1 gap-4">
           <InputText label="Username" v-model="form.username" placeholder="gabriel" />
           <InputPassword label="Password" placeholder="123456" v-model="form.password" />
-          <Button variant="primary" :is-dark="false" class="w-full" @click="onClickLogin" :disabled="!isValid || isLoading" :isLoading="isLoading">Login</Button>
+          <Button type="submit" variant="primary" :is-dark="false" class="w-full" @click="onClickLogin" :disabled="!isValid || isLoading" :isLoading="isLoading">Login</Button>
           <p class="text-red-500">{{ errorMessage }}</p>
-        </section>
+        </form>
       </section>
     </template>
   </Modal>
