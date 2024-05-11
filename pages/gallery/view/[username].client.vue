@@ -19,8 +19,6 @@
 const { isLoading, data: gallery, fetchData: fetchGallery } = useGallery();
 const { isLoading: isLoadingImages, fetchData } = await useGalleryImages();
 
-console.log('is loading', isLoading.value);
-
 fetchGallery();
 fetchData();
 
