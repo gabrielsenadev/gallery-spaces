@@ -3,7 +3,7 @@
     :class="{ 'items-center justify-center flex': isLoading }">
     <ActionHeader />
     <Loading :size="128" v-if="isLoading" />
-    <template v-if="gallery">
+    <template v-else-if="gallery">
       <GalleryUserProfile :name="gallery.username" :image-url="gallery.profileImageUrl" tag="header" />
       <Loading :size="128" v-if="isLoadingImages" />
       <GalleryImages />

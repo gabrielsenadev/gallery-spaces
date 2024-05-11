@@ -28,7 +28,6 @@ const errorMessage = ref('');
 export const useGallery = () => {
   const { user, isAuthenticated } = useAuth();
   const { name: routeName, params: { username } } = useRoute();
-  const router = useRouter();
 
   async function fetchData() {
     if (!username) {
@@ -36,6 +35,7 @@ export const useGallery = () => {
     }
 
     try {
+      isLoading.value = true;
       const response = await $fetch<{
         data: {
           username: string;
