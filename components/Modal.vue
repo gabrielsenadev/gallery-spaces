@@ -11,7 +11,7 @@
         <slot name="header" />
         <button class="ml-auto cursor-pointer text-slate-600 hover:text-black transition-colors" type="button"
           @click="emit('close')">
-          <PhX size="32" />
+          <IconX size="32" />
         </button>
       </div>
       <div class="modal-body flex-1 overflow-auto">
@@ -25,7 +25,7 @@
 </template>
 
 <script lang="ts" setup>
-import { PhX } from '@phosphor-icons/vue';
+import { IconX } from '@tabler/icons-vue';
 
 type ModalSize = 'sm' | 'lg' | 'xs';
 

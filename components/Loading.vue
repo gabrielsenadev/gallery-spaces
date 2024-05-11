@@ -1,9 +1,9 @@
 <template>
-  <PhCircleNotch class="animate-spin text-black" :size="size" v-bind="$attrs"/>
+  <IconLoader2 class="animate-spin text-black" :size="size" v-bind="$attrs"/>
 </template>
 
 <script lang="ts" setup>
-import { PhCircleNotch } from '@phosphor-icons/vue';
+import { IconLoader2 } from '@tabler/icons-vue';
 
 const { size } = withDefaults(defineProps<{
   size: number;
