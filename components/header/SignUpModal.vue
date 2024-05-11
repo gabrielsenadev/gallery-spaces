@@ -20,7 +20,7 @@
 
 <script lang="ts" setup>
 
-const { goToUserGallery } = useGallery();
+const { goToUserGallery } = useRoutes();
 const { signUp } = useAuth();
 
 const emit = defineEmits(['close']);

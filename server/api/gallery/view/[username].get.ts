@@ -16,9 +16,9 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
       });
     }
 
-    const { gallery } = input.data;
+    const { username } = input.data;
 
-    const images = await GalleryService.getInstance().getImages(gallery);
+    const images = await GalleryService.getInstance().getImages(username);
 
     if (!images) {
       return createEventResponse({
@@ -29,17 +29,11 @@ export default eventHandler(async (event): Promise<EventExecutorResponse> => {
       });
     }
 
-    const profileImage = await AuthService.getInstance().getProfileImage({ username: gallery });
-
     return createEventResponse({
       event,
       success: true,
       data: {
         images,
-        user: {
-          username: gallery,
-          profileImageUrl: profileImage,
-        },
       },
     });
 

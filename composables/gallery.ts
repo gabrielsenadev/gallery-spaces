@@ -1,7 +1,8 @@
+import type { Gallery, GalleryData } from "~/types/gallery";
+
 
 async function deleteImage(imageId: string) {
   const header = await getUserTokenAuthorizationHeader();
-  console.log('img', imageId);
   await $fetch(`/api/gallery/delete/${imageId}`, {
     method: "DELETE",
     headers: header,
@@ -20,29 +21,49 @@ async function uploadImage(form: FormData) {
   return true;
 }
 
+const data = ref<Gallery| null>(null);
+const isLoading = ref(false);
+const errorMessage = ref('');
+
 export const useGallery = () => {
   const { user, isAuthenticated } = useAuth();
-  const { name: routeName, params } = useRoute();
+  const { name: routeName, params: { username } } = useRoute();
   const router = useRouter();
 
-  const isOnGalleryRoute = computed(() => {
-    return routeName === "gallery-view-gallery";
-  });
-
-  function goToUserGallery() {
-    if (!isAuthenticated) {
+  async function fetchData() {
+    if (!username) {
       return;
     }
-    router.push(`/gallery/view/${user.value!.username}`);
-  }
+
+    try {
+      const response = await $fetch<{
+        data: {
+          username: string;
+          profileImageUrl: string;
+        };
+        success: boolean;
+      }>(`/api/user/view/${username}`);
+
+      data.value = response.data;
+    } catch (error) {
+      if (error instanceof Error) {
+        errorMessage.value = error.message;
+      }
+    } finally {
+      isLoading.value = false;
+    }
+  };
+
+  const isOnGalleryRoute = computed(() => {
+    return routeName === "gallery-view-username";
+  });
 
   const isOnOwnGallery = computed(() => {
     if (!isAuthenticated.value || !isOnGalleryRoute.value) {
       return false;
     }
-
-    const gallery = params["gallery"];
-    if (!gallery || user.value?.username !== gallery) {
+    
+    if (!username || user.value?.username !== username) {
       return false;
     }
 
@@ -50,10 +71,12 @@ export const useGallery = () => {
   });
 
   return {
+    data,
+    isLoading,
+    fetchData,
     deleteImage,
     uploadImage,
     isOnOwnGallery,
-    goToUserGallery,
     isOnGalleryRoute,
   };
 };

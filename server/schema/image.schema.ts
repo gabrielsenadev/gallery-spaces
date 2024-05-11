@@ -34,7 +34,7 @@ export const getImageInputSchema = z.object({
 });
 
 export const getGalleryListInputSchema = z.object({
-  gallery: z.string({
+  username: z.string({
     message: 'gallery param is required.'
   }),
 });

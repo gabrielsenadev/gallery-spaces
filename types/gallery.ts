@@ -5,10 +5,11 @@ export type GalleryImage = {
   id: string;
 };
 
+export type Gallery = {
+  username: string;
+  profileImageUrl: string;
+};
+
 export type GalleryData = {
-  user: {
-    username: string;
-    profileImageUrl: string;
-  };
   images: GalleryImage[];
 };

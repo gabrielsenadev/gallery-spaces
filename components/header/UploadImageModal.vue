@@ -6,7 +6,7 @@
     <template #body>
       <section class="flex justify-center flex-col p-4">
         <form class="flex flex-col flex-1 gap-4" @submit.prevent="onSubmit" ref="formElement">
-          <InputImageUpload name="image" />
+          <InputImageUpload name="image" :key="currentKey"/>
           <InputText label="Title" placeholder="My image title" name="title" v-model="form.title" />
           <InputText label="Description" placeholder="My image description" name="description" v-model="form.description" />
           <Button type="submit" variant="primary" :is-dark="false" class="w-full" :isLoading="isLoading"
@@ -21,6 +21,7 @@
 <script lang="ts" setup>
 
 const { uploadImage } = useGallery();
+const { fetchData } = useGalleryImages();
 
 const emit = defineEmits(['close']);
 
@@ -31,6 +32,7 @@ const { isOpen } = defineProps<{
 const isLoading = ref(false);
 const formElement = ref<HTMLFormElement | null>(null);
 const errorMessage = ref('');
+const currentKey = ref(0);
 
 const form = reactive({
   title: '',
@@ -38,6 +40,13 @@ const form = reactive({
 });
 
 const isValid = computed(() => !!form.title);
+
+const resetFormElement = () => {
+  if (formElement.value) {
+    formElement.value.reset();
+  }
+  currentKey.value++;
+}
 
 const onSubmit = (event: Event) => {
   if (!(event.target instanceof HTMLFormElement) || !event.target) {
@@ -51,6 +60,8 @@ const onSubmit = (event: Event) => {
     .then((success) => {
       if (success) {
         emit('close');
+        resetFormElement();
+        fetchData();
       }
     })
     .catch((error) => errorMessage.value = error.data?.message ?? error.message)
