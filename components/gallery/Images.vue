@@ -3,7 +3,7 @@
     <template v-if="data?.images?.length">
         <div v-for="image in data.images" :key="image.imageUrl" class="relative cursor-pointer group" @click.stop="onOpen(image)">
           <NuxtImg provider="netlify" :src="image.imageUrl" height="300" width="300" fit="cover"
-            class="rounded-2xl hover:bg-black hover:bg-blend-darken" placeholder />
+            class="rounded-2xl hover:bg-black hover:bg-blend-darken" placeholder loading="lazy" />
           <div
             class="invisible absolute inset-0 bg-black/25 items-end rounded-2xl group-hover:visible flex justify-end p-4">
             <IconTrash class="text-white hover:text-red-400" :size="32" @click.prevent.stop="onDelete(image)" v-if="isOnOwnGallery"/>
