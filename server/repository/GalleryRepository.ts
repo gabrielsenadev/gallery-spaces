@@ -89,8 +89,8 @@ export class GalleryRepository {
       const username = gallery.replace(/\/$/, '');
       return {
         gallery: username,
-        url: `/api/gallery/view/${gallery}`,
-        profileImageUrl: `/api/image/view?key=${gallery}${getSeparator()}profileImage`,
+        url: `/api/gallery/view/${username}`,
+        profileImageUrl: `/api/image/view?key=${username}${getSeparator()}profileImage`,
       };
     });
   }
