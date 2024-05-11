@@ -20,13 +20,14 @@
 import type { GalleryData, GalleryImage } from '~/types/gallery';
 
 const currentImage = ref<GalleryImage | null>(null);
+const { deleteImage } = useGallery();
 
 const { gallery } = defineProps<{
   gallery: GalleryData;
 }>();
 
-const onDelete = (id: string) => {
-  console.log('del', id);
+const onDelete = (image: GalleryImage) => {
+  deleteImage(image.id);
 };
 
 const onOpen = (image: GalleryImage) => {

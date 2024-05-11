@@ -1,3 +1,25 @@
+
+async function deleteImage(imageId: string) {
+  const header = await getUserTokenAuthorizationHeader();
+  console.log('img', imageId);
+  await $fetch(`/api/gallery/delete/${imageId}`, {
+    method: "DELETE",
+    headers: header,
+  });
+
+  return true;
+}
+
+async function uploadImage(form: FormData) {
+  const header = await getUserTokenAuthorizationHeader();
+  await $fetch("/api/gallery/upload", {
+    body: form,
+    method: "POST",
+    headers: header,
+  });
+  return true;
+}
+
 export const useGallery = () => {
   const { user, isAuthenticated } = useAuth();
   const { name: routeName, params } = useRoute();
@@ -28,8 +50,10 @@ export const useGallery = () => {
   });
 
   return {
-    isOnGalleryRoute,
+    deleteImage,
+    uploadImage,
     isOnOwnGallery,
     goToUserGallery,
+    isOnGalleryRoute,
   };
 };

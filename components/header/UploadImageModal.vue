@@ -20,7 +20,7 @@
 
 <script lang="ts" setup>
 
-const { upload } = useAuth();
+const { uploadImage } = useGallery();
 
 const emit = defineEmits(['close']);
 
@@ -47,7 +47,7 @@ const onSubmit = (event: Event) => {
 
   const formData = new FormData(event.target);
 
-  upload(formData)
+  uploadImage(formData)
     .then((success) => {
       if (success) {
         emit('close');

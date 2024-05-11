@@ -73,6 +73,7 @@ export class GalleryService {
 
   async deleteImage(context: DeleteImageInputContext) {
     const key = this.createGalleryImageKey(context.username, context.image);
+    await this.galleryRepository.deleteImage(context);
     return this.imageRepository.delete({ key });
   }
 

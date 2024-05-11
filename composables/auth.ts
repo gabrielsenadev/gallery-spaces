@@ -1,6 +1,3 @@
-import { H3Error } from "h3";
-import { UserWithoutTokenError } from "~/errors/UserWithoutTokenError";
-
 type AuthUser = {
   username: string;
 };
@@ -25,17 +22,6 @@ type GetAuthUserResponse = {
   message: string;
 };
 
-const getUserTokenAuthorizationHeader = async () => {
-  const token = await localStorage.getItem("auth:token");
-  if (!token) {
-    throw new UserWithoutTokenError();
-  }
-
-  const header = new Headers();
-  header.set("Authorization", `Bearer ${token}`);
-  return header;
-};
-
 const user = ref<AuthUser | null>(null);
 const isAuthenticated = computed(() => !!user.value);
 
@@ -46,16 +32,6 @@ async function signUp(form: FormData) {
   });
   localStorage.setItem("auth:token", response.data.token);
   user.value = response.data.user;
-  return true;
-}
-
-async function upload(form: FormData) {
-  const header = await getUserTokenAuthorizationHeader();
-  await $fetch<LoginResponse>("/api/gallery/upload", {
-    body: form,
-    method: "POST",
-    headers: header,
-  });
   return true;
 }
 
@@ -114,7 +90,6 @@ export const useAuth = () => {
     login,
     logout,
     signUp,
-    upload,
     fetchUser,
     isAuthenticated,
   };
