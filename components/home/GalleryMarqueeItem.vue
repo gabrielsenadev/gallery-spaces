@@ -10,6 +10,7 @@
       width="32"
       fit="cover"
       class="rounded-full"
+      placeholder
     />
     {{ gallery }}
   </NuxtLink>

@@ -9,7 +9,7 @@
     <template #body>
       <main class="flex flex-col sm:flex-row flex-1 gap-2 h-full">
         <section class="overflow-none sm:overflow-auto w-full sm:w-[70%] flex items-center justify-center">
-          <NuxtImg provider="netlify" :src="image.imageUrl" @load="onLoad" v-bind="transformsData" @on-error="disableLoading" />
+          <NuxtImg provider="netlify" :src="image.imageUrl" @load="onLoad" v-bind="transformsData" @on-error="disableLoading" placeholder />
         </section>
         <section class="flex-1 flex flex-col gap-4 px-4">
           <div class="flex items-center gap-2">

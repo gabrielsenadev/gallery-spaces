@@ -1,6 +1,6 @@
 <template>
   <component :is="tag" class="flex flex-col justify-center items-center">
-    <NuxtImg provider="netlify" :src="imageUrl" height="256" width="256" fit="cover" class="rounded-full" />
+    <NuxtImg provider="netlify" :src="imageUrl" height="256" width="256" fit="cover" class="rounded-full" placeholder />
     <h2 class="font-bold text-2xl font-sans text-white">
       @{{ name }}
     </h2>
