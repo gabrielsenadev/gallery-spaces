@@ -86,7 +86,7 @@ export class GalleryRepository {
     }
 
     return galleries.directories.map(gallery => {
-      const username = gallery.replace(/$\//, '');
+      const username = gallery.replace(/\/$/, '');
       return {
         gallery: username,
         url: `/api/gallery/view/${gallery}`,
