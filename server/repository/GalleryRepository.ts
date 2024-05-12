@@ -57,7 +57,7 @@ export class GalleryRepository {
 
   async getImages(username: string) {
     const images = await this.store.list({
-      prefix: username,
+      prefix: `${username}${getSeparator()}`,
     });
 
     return Promise.all(images.blobs.map(async ({ key }) => {
