@@ -3,6 +3,8 @@ Gallery Spaces is a fullstack application hat empowers users to create their own
 
 This is a submisison for Netlify Dynamic Site Challenge.
 
+[Demo link](https://gallery-spaces.netlify.app)
+
 ## Some application features
 
 - Authentication system (with bcrypt and JWT token);
