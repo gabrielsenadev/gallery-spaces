@@ -1,75 +1,37 @@
-# Nuxt 3 Minimal Starter
+# Gallery Spaces - Netlify Dynamic Site Challenge
+Gallery Spaces is a fullstack application hat empowers users to create their own galleries, manage them (uploading and deleting images), share their work with others, and customize images before downloading.
 
-Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introduction) to learn more.
+This is a submisison for Netlify Dynamic Site Challenge.
 
-## Setup
+## Some application features
 
-Make sure to install the dependencies:
+- Authentication system (with bcrypt and JWT token);
+- Persistent data storage (Netlify Blobs);
+- Back-end API, with authentication, image uploader, gallery creator, image provider, etc;
+- Powerful Image Customization with Netlify Image CDN
 
+## Technologies
+- Netlify Image CDN
+- Netlify Blobs
+- Netlify Functions
+- Nuxt
+- Vue 3
+- TailwindCSS
+- Zod
+
+
+## Running
+
+1. Clone this repository;
+2. Install dependencies:
 ```bash
-# npm
-npm install
-
-# pnpm
-pnpm install
-
-# yarn
-yarn install
-
-# bun
-bun install
+npm ci
 ```
-
-## Development Server
-
-Start the development server on `http://localhost:3000`:
-
+3. Link this repository to a netlify site
+```bahs
+netlify link
+```
+4. Start the server
 ```bash
-# npm
-npm run dev
-
-# pnpm
-pnpm run dev
-
-# yarn
-yarn dev
-
-# bun
-bun run dev
+npm run start
 ```
-
-## Production
-
-Build the application for production:
-
-```bash
-# npm
-npm run build
-
-# pnpm
-pnpm run build
-
-# yarn
-yarn build
-
-# bun
-bun run build
-```
-
-Locally preview production build:
-
-```bash
-# npm
-npm run preview
-
-# pnpm
-pnpm run preview
-
-# yarn
-yarn preview
-
-# bun
-bun run preview
-```
-
-Check out the [deployment documentation](https://nuxt.com/docs/getting-started/deployment) for more information.
