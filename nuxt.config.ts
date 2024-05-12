@@ -20,6 +20,8 @@ export default defineNuxtConfig({
 
   app: {
     head: {
+      title: 'Gallery Spaces - Create your own gallery and share',
+      charset: 'utf-8',
       bodyAttrs: {
         class: 'h-full',
       },
