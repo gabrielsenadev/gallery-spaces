@@ -2,7 +2,7 @@
   <section class="flex gap-8 mx-10 flex-wrap py-8 justify-center">
     <template v-if="data?.images?.length">
         <div v-for="image in data.images" :key="image.imageUrl" class="relative cursor-pointer group" @click.stop="onOpen(image)">
-          <NuxtImg provider="netlify" :src="image.imageUrl" height="300" width="300" fit="cover"
+          <NuxtImg :src="image.imageUrl" height="300" width="300" fit="cover"
             class="rounded-2xl hover:bg-black hover:bg-blend-darken" placeholder placeholder-class="bg-gray w-[300px] h-[300px]" loading="lazy" />
           <div
             class="invisible absolute inset-0 bg-black/25 items-end rounded-2xl group-hover:visible flex justify-end p-4">

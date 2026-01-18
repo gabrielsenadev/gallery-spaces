@@ -21,9 +21,7 @@ type GalleryListItem = {
   profileImageUrl: string;
 };
 
-const { parentTag } = withDefaults(defineProps<GalleriesMarqueeProps>(), {
-  parentTag: 'section',
-}) 
+const { parentTag = 'section' } = defineProps<GalleriesMarqueeProps>();
 
 const { data } = await useFetch<{
   data: GalleryListItem[],
