@@ -1,9 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+console.log('ebv', process.env.NODE_ENV)
 export default defineNuxtConfig({
   devtools: { enabled: true },
 
   nitro: {
     preset: "netlify",
+    compatibilityDate: '2026-01-18'
   },
 
   image: {

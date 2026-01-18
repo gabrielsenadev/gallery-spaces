@@ -1,16 +1,14 @@
 <template>
   <NuxtLink
-    :href="url"
+    :to="url"
     class="py-2 px-4 pr-12 items-center bg-white rounded-md flex gap-4 justify-start hover:bg-white/90 transition-colors min-w-48"
   >
     <NuxtImg
-      provider="netlify"
       :src="profileImageUrl"
       height="32"
       width="32"
       fit="cover"
       class="rounded-full"
-      placeholder
       loading="lazy"
     />
     {{ gallery }}

@@ -14,11 +14,7 @@ type ButtonProps = {
   isLoading?: boolean;
 }
 
-const { variant, isDark } = withDefaults(defineProps<ButtonProps>(), {
-  isDark: true,
-  isLoading: false,
-  variant: 'primary',
-});
+const { variant = 'primary', isDark = true, isLoading = false } = defineProps<ButtonProps>();
 
 const variantClasses = computed(() => {
   return {

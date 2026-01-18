@@ -5,11 +5,9 @@
 <script lang="ts" setup>
 import { IconLoader2 } from '@tabler/icons-vue';
 
-const { size } = withDefaults(defineProps<{
+const { size = 128 } = defineProps<{
   size: number;
-}>(), {
-  size: 128,
-});
+}>();
 
 </script>
 
